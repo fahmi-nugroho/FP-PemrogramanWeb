@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
 
-    <title>Hello, world!</title>
+    <title>My Shop</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -134,7 +134,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-dark" name="button">Beli (1)</button>
+            <a href="cart.php" type="button" class="btn btn-dark">Lihat Selengkapnya</a>
           </div>
         </div>
       </div>
