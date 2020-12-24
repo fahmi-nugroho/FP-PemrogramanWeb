@@ -5,7 +5,7 @@ function connection() {
    $dbServer = 'localhost';
    $dbUser = 'root';
    $dbPass = '';
-   $dbName = "fp_pemweb2";
+   $dbName = "online_shop";
 
    $conn = mysqli_connect($dbServer, $dbUser, $dbPass);
 
