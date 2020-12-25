@@ -154,19 +154,23 @@
 
     <script type="text/javascript">
         function addCarts(cart, stok, id){
-            $.ajax({
-                type: "POST",
-                url: "dataCart.php",
-                data: "action=tambah&id=" + id,
-                success: function(data){
-                    alert("Berhasil ditambahkan");
-                    viewCart();
-                    $("#AC-"+id).attr('onclick', "addCarts(" + (++cart) + ", " + stok + ", " + id + ")");
-                    if (cart == stok) {
-                        $("#AC-"+id).prop('disabled', true);
+            <?php if (isset($_SESSION['user'])): ?>
+                $.ajax({
+                    type: "POST",
+                    url: "dataCart.php",
+                    data: "action=tambah&id=" + id,
+                    success: function(data){
+                        alert("Berhasil ditambahkan");
+                        viewCart();
+                        $("#AC-"+id).attr('onclick', "addCarts(" + (++cart) + ", " + stok + ", " + id + ")");
+                        if (cart == stok) {
+                            $("#AC-"+id).prop('disabled', true);
+                        }
                     }
-                }
-            })
+                })
+            <?php else: ?>
+                alert('Mohon login terlebih dahulu');
+            <?php endif; ?>
         }
     </script>
 

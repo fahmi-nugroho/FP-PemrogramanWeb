@@ -34,8 +34,12 @@
         </form>
         <h5><a data-toggle="modal" data-target="#cart" style="cursor: pointer;"><i class="fas fa-shopping-cart mt-2 mr-4 ml-3 text-dark" data-toggle="tooltip" title="Keranjang Belanja"></i></a></h5>
         <h5><i class="fas fa-grip-lines-vertical mt-2 mr-4" style="opacity: 0.5"></i></h5>
-        <button class="btn btn-outline-dark mr-3" type="button" data-toggle="modal" data-target="#login">Masuk</button>
-        <button class="btn btn-dark" type="button" data-toggle="modal" data-target="#register">Daftar</button>
+        <?php if (isset($_SESSION['user'])): ?>
+            <a href="dashboard.html" class="btn btn-outline-dark"><?= $_SESSION['user']['nama'] ?></a>
+        <?php else: ?>
+            <button class="btn btn-outline-dark mr-3" type="button" data-toggle="modal" data-target="#login">Masuk</button>
+            <button class="btn btn-dark" type="button" data-toggle="modal" data-target="#register">Daftar</button>
+        <?php endif; ?>
       </div>
     </nav>
     <div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="true">
@@ -48,16 +52,16 @@
             </button>
           </div>
           <div class="modal-body">
-            <form class="" action="index.html" method="post">
+            <form>
               <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="emailLogin" aria-describedby="emailHelp">
+                <input type="email" class="form-control" id="emailLogin">
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
-                <input type="current-password" class="form-control" id="passwordLogin">
+                <input type="password" class="form-control" id="passwordLogin">
               </div>
-              <button type="submit" class="btn btn-dark"><a href="dashboard.html" class="text-decoration-none text-white">Masuk</a></button>
+              <button type="button" class="btn btn-dark" onclick="login()">Masuk</button>
             </form>
           </div>
           <div class="modal-footer">
@@ -76,25 +80,31 @@
             </button>
           </div>
           <div class="modal-body">
-            <form class="" action="index.html" method="post">
+            <form>
               <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="emailRegist" aria-describedby="emailHelp">
+                <input type="email" class="form-control" id="emailRegis" aria-describedby="emailHelp">
+                <div class="invalid-feedback" id="fbEmailRegis">
+                    Mohon masukkan email dengan benar
+                </div>
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
-                <input type="new-password" class="form-control" id="passwordRegist">
+                <input type="password" class="form-control" id="passwordRegis">
+                <div class="invalid-feedback">
+                    Password minimal 8 karakter
+                </div>
               </div>
               <div class="form-group">
                 <label for="konfirmasiPassword">Konfirmasi Password</label>
-                <input type="new-password" class="form-control" id="konfirmasiPassword">
+                <input type="password" class="form-control" id="confirmPassword">
+                <div class="invalid-feedback">
+                    Password tidak sama
+                </div>
               </div>
-              <button type="submit" class="btn btn-dark">Daftar</button>
+              <button type="button" class="btn btn-dark" onclick="daftar()">Daftar</button>
             </form>
-          </div>
-          <div class="modal-footer">
-
           </div>
         </div>
       </div>
@@ -109,7 +119,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <table class="table" id="dataCartH">
+            <table class="table dataCart">
+
             </table>
             <hr style="width: 50%">
             <div class="row">
@@ -123,17 +134,95 @@
         </div>
       </div>
     </div>
-
+    <?php
+        // unset($_SESSION['cart']);
+        // unset($_SESSION['user']);
+        // echo print_r($_SESSION);
+    ?>
     <script type="text/javascript">
         $(document).ready(function () {
             viewCart();
         })
 
         <?php
-            $ext = explode("/" , $_SERVER["REQUEST_URI"]);
-            $ext = strtolower(end($ext));
+            $page = explode("/" , $_SERVER["REQUEST_URI"]);
+            $page = strtolower(end($page));
         ?>
-        var page = "<?= $ext ?>";
+        var page = "<?= $page ?>";
+
+        function daftar(){
+            var pattern = /^[a-zA-Z0-9._]+@[a-zA-Z](?:[a-zA-Z]{0,8}[a-zA-Z])?(?:\.[a-zA-Z](?:[a-zA-Z]{0,8}[a-zA-Z])?)*$/;
+            var email = $("#emailRegis");
+            var pass = $("#passwordRegis");
+            var newPass = $("#confirmPassword");
+
+            if (pattern.test(email.val())) {
+                email.addClass('is-valid').removeClass('is-invalid');
+            } else {
+                $("#fbEmailRegis").html("Mohon masukkan email dengan benar");
+                email.addClass('is-invalid').removeClass('is-valid');
+            }
+
+            if (pass.val().length > 7) {
+                pass.addClass('is-valid').removeClass('is-invalid');
+                if (newPass.val() == pass.val()) {
+                    newPass.addClass('is-valid').removeClass('is-invalid');
+                } else {
+                    newPass.addClass('is-invalid').removeClass('is-valid');
+                }
+            } else {
+                pass.addClass('is-invalid').removeClass('is-valid');
+            }
+
+            if (email.hasClass("is-valid") &&
+                pass.hasClass("is-valid") &&
+                newPass.hasClass("is-valid")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "conn.php",
+                        data: "act=cekEmail&data=" + email.val(),
+                        success: function(data){
+                            if (data > 0) {
+                                $("#fbEmailRegis").html("Email telah terdaftar");
+                                email.addClass('is-invalid').removeClass('is-valid');
+                            } else {
+                                // register(email.val(), pass.val());
+                                $("#register").modal('hide');
+                                $("#login").modal('show');
+                                email.removeClass("is-valid").val("");
+                                pass.removeClass("is-valid").val("");
+                                newPass.removeClass("is-valid").val("");
+                            }
+                        }
+                    })
+            }
+        }
+
+        function register(email, pass) {
+            $.ajax({
+                type: "POST",
+                url: "conn.php",
+                data: "act=regis&email=" + email + "&pass=" + pass,
+                success: function(data){
+                    alert(data);
+                }
+            })
+        }
+
+        function login() {
+            var email = $("#emailLogin").val();
+            var pass = $("#passwordLogin").val();
+
+            $.ajax({
+                type: "POST",
+                url: "conn.php",
+                data: "act=login&email=" + email + "&pass=" + pass,
+                success: function(data){
+                    alert(data);
+                    window.location = window.location.href;
+                }
+            })
+        }
 
         function viewCart() {
             $.ajax({
@@ -141,10 +230,7 @@
                 url: "dataCart.php",
                 data: "action=view",
                 success: function(data){
-                    $("#dataCartH").html(data);
-                    if (page == "cart.php") {
-                        $("#dataCart").html(data);
-                    }
+                    $(".dataCart").html(data);
                     totalCart();
                 }
             })
@@ -188,10 +274,10 @@
                 url: "dataCart.php",
                 data: "action=kurang&id=" + id,
                 success: function(data){
+                    viewCart();
                     if (cart == 1) {
                         alert("Barang dihapus dari keranjang");
                     }
-                    viewCart();
                     if (page != "cart.php") {
                         $("#AC-"+id).attr('onclick', "addCarts(" + (--cart) + ", " + stok + ", " + id + ")");
                         if ($("#AC-"+id).prop("disabled") == true) {

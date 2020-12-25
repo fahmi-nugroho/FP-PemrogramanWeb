@@ -1,11 +1,16 @@
 <?php
     include_once 'assets/template/header.php';
+
+    if (!isset($_SESSION['user'])) {
+        message('Mohon login terlebih dahulu');
+        redirect('index.php');
+    }
 ?>
 
 <div class="container mt-5">
   <div class="row">
     <div class="col-9">
-      <table class="table" id="dataCart">
+      <table class="table dataCart">
 
       </table>
     </div>
