@@ -2,10 +2,10 @@
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 20, 2020 at 02:02 PM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.7
+-- Host: localhost:3306
+-- Generation Time: Dec 25, 2020 at 08:22 PM
+-- Server version: 5.7.24
+-- PHP Version: 7.2.19
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `fp_pemweb2`
+-- Database: `online_shop`
 --
 
 -- --------------------------------------------------------
@@ -105,20 +105,6 @@ CREATE TABLE `news` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pembeli`
---
-
-CREATE TABLE `pembeli` (
-  `kode_order` varchar(25) NOT NULL,
-  `nama_pembeli` varchar(50) NOT NULL,
-  `email_pembeli` varchar(25) NOT NULL,
-  `telepon_pembeli` varchar(25) NOT NULL,
-  `alamat_pembeli` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `produk`
 --
 
@@ -141,7 +127,7 @@ INSERT INTO `produk` (`id_produk`, `id_kategori`, `penjual`, `nama_produk`, `des
 (1, 2, 'G Shop', 'Playstation 4', 'Playstation 4', 3000000, 20, 'produk1.png'),
 (2, 2, 'G Shop', 'Nintendo Switch', 'Nintendo Switch', 5000000, 10, 'produk2.png'),
 (3, 3, 'G Shop', 'Controller Nintendo Switch', 'Controller Nintendo Switch', 900000, 15, 'produk3.png'),
-(4, 1, 'G Shop', 'Zelda BOTW Nintendo Switch', 'Zelda BOTW Nintendo Switch', 500000, 5, 'produk4.png');
+(4, 1, 'G Shop', 'Zelda BOTW Nintendo Switch', 'Zelda BOTW Nintendo Switch', 500000, 1, 'produk4.png');
 
 -- --------------------------------------------------------
 
@@ -155,6 +141,30 @@ CREATE TABLE `statistik` (
   `hits` int(11) NOT NULL,
   `online` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id_user` int(11) NOT NULL,
+  `nama_user` varchar(50) NOT NULL,
+  `email_user` varchar(25) NOT NULL,
+  `pass_user` varchar(255) NOT NULL,
+  `telepon_user` varchar(25) DEFAULT NULL,
+  `alamat_user` text,
+  `foto_user` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id_user`, `nama_user`, `email_user`, `pass_user`, `telepon_user`, `alamat_user`, `foto_user`) VALUES
+(1, 'a', 'a@a.a', 'a', '1', 'a', 'a'),
+(2, 'rifan', 'rifan@gmail.com', '$2y$10$WrsIP90rBde.0Hgp4PHKFuxaW1OmFkQDfWJEF2ixhaeQyPaS4HvkK', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -213,17 +223,19 @@ ALTER TABLE `news`
   ADD PRIMARY KEY (`id_news`);
 
 --
--- Indexes for table `pembeli`
---
-ALTER TABLE `pembeli`
-  ADD PRIMARY KEY (`kode_order`);
-
---
 -- Indexes for table `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`id_produk`),
   ADD KEY `id_kategori` (`id_kategori`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id_user`),
+  ADD UNIQUE KEY `email_pembeli` (`email_user`),
+  ADD UNIQUE KEY `telepon_user` (`telepon_user`);
 
 --
 -- Indexes for table `voucher`
@@ -258,6 +270,12 @@ ALTER TABLE `news`
 --
 ALTER TABLE `produk`
   MODIFY `id_produk` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `voucher`
