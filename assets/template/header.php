@@ -42,6 +42,7 @@
         <?php endif; ?>
       </div>
     </nav>
+
     <div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -70,6 +71,7 @@
         </div>
       </div>
     </div>
+
     <div class="modal fade" id="register" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -109,6 +111,7 @@
         </div>
       </div>
     </div>
+
     <div class="modal fade" id="cart" tabindex="-1" aria-labelledby="cartLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -119,9 +122,11 @@
             </button>
           </div>
           <div class="modal-body">
-            <table class="table dataCart">
+                <div class="table-responsive-md">
+                    <table class="table dataCart">
 
-            </table>
+                    </table>
+                </div>
             <hr style="width: 50%">
             <div class="row">
               <p class="ml-auto mr-5">Total Harga</p>
@@ -177,24 +182,24 @@
             if (email.hasClass("is-valid") &&
                 pass.hasClass("is-valid") &&
                 newPass.hasClass("is-valid")) {
-                    $.ajax({
-                        type: "POST",
-                        url: "conn.php",
-                        data: "act=cekEmail&data=" + email.val(),
-                        success: function(data){
-                            if (data > 0) {
-                                $("#fbEmailRegis").html("Email telah terdaftar");
-                                email.addClass('is-invalid').removeClass('is-valid');
-                            } else {
-                                // register(email.val(), pass.val());
-                                $("#register").modal('hide');
-                                $("#login").modal('show');
-                                email.removeClass("is-valid").val("");
-                                pass.removeClass("is-valid").val("");
-                                newPass.removeClass("is-valid").val("");
-                            }
+                $.ajax({
+                    type: "POST",
+                    url: "conn.php",
+                    data: "act=cekEmail&data=" + email.val(),
+                    success: function(data){
+                        if (data > 0) {
+                            $("#fbEmailRegis").html("Email telah terdaftar");
+                            email.addClass('is-invalid').removeClass('is-valid');
+                        } else {
+                            register(email.val(), pass.val());
+                            $("#register").modal('hide');
+                            $("#login").modal('show');
+                            email.removeClass("is-valid").val("");
+                            pass.removeClass("is-valid").val("");
+                            newPass.removeClass("is-valid").val("");
                         }
-                    })
+                    }
+                })
             }
         }
 
@@ -242,7 +247,8 @@
                 url: "dataCart.php",
                 data: "action=total",
                 success: function(data){
-                    $(".TotalHarga").html(data);
+                    $(".TotalHarga").html(JSON.parse(data).harga);
+                    $("#btnCO").html("Checkout (" + JSON.parse(data).total + ")");
                 }
             })
         }
