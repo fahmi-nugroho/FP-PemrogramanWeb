@@ -55,7 +55,7 @@ require 'conn.php';
             <td>
                 <a href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_produk']?>">Update</a>
                 <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_produk']?>"
-                    onclick="return confirm('Hapus Data <?php echo $data['nama']?>')" ;>Delete</a>
+                    onclick="return confirm('Hapus Data <?php echo $data['id_produk']?>')" ;>Delete</a>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -76,7 +76,7 @@ require 'conn.php';
                 <a
                     href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_voucher']?>">Update</a>
                 <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_voucher']?>"
-                    onclick="return confirm('Hapus Data <?php echo $data['nama']?>')" ;>Delete</a>
+                    onclick="return confirm('Hapus Data <?php echo $data['id_voucher']?>')" ;>Delete</a>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -99,7 +99,7 @@ require 'conn.php';
             <td>
                 <a href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_produk']?>">Update</a>
                 <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_produk']?>"
-                    onclick="return confirm('Hapus Data <?php echo $data['nama']?>')" ;>Delete</a>
+                    onclick="return confirm('Hapus Data <?php echo $data['id_user']?>')" ;>Delete</a>
             </td>
         </tr>
         <?php endwhile; ?>
