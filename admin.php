@@ -97,8 +97,8 @@ require 'conn.php';
             <td><?php echo $data['alamat_user'] ?></td>
             <td><?php echo $data['foto_user'] ?></td>
             <td>
-                <a href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_produk']?>">Update</a>
-                <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_produk']?>"
+                <a href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_user']?>">Update</a>
+                <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_user']?>"
                     onclick="return confirm('Hapus Data <?php echo $data['id_user']?>')" ;>Delete</a>
             </td>
         </tr>
