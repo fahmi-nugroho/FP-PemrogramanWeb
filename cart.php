@@ -8,16 +8,6 @@
 ?>
 
 <div class="container mt-5">
-<<<<<<< HEAD
-  <div class="row">
-    <div class="col-9">
-      <table class="table dataCart">
-
-      </table>
-    </div>
-    <div class="col-3">
-      <div class="card" style="width: 18rem;">
-=======
   <div class="row justify-content-center">
     <div class="col-12 col-xl-9 mb-3">
         <div class="table-responsive-md">
@@ -28,17 +18,10 @@
     </div>
     <div class="col-12 col-md-6 col-xl-3 d-inline-block">
       <div class="card">
->>>>>>> deeb6f912aab6de114034ae3fc85698724799708
         <div class="card-body">
           <h5 class="card-title">Ringkasan Belanja</h5>
           <hr style="width: 90%">
           <div class="row mb-3">
-<<<<<<< HEAD
-            <p class="ml-1 mr-auto">Total Harga</p>
-            <p class="mr-1 ml-auto TotalHarga">Rp 0,00</p>
-          </div>
-          <a href="#" class="btn btn-dark" style="width:100%" data-toggle="modal" data-target="#checkout">Checkout</a>
-=======
             <p class="ml-1 mr-auto font-weight-bold">Total Harga</p>
             <p class="mr-1 ml-auto TotalHarga">Rp 0,00</p>
           </div>
@@ -62,14 +45,11 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-dark" onclick="bayarck()">Bayar</button>
->>>>>>> deeb6f912aab6de114034ae3fc85698724799708
         </div>
       </div>
     </div>
   </div>
 </div>
-<<<<<<< HEAD
-=======
 
 <script type="text/javascript">
     $("#btnCO").on("click", function () {
@@ -148,4 +128,3 @@
         }
     }
 </script>
->>>>>>> deeb6f912aab6de114034ae3fc85698724799708

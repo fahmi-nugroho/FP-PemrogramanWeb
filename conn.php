@@ -3,7 +3,7 @@ function connection() {
    // membuat konekesi ke database system
    $dbServer = 'localhost';
    $dbUser = 'root';
-   $dbPass = 'bengkulu10';
+   $dbPass = '';
    $dbName = "online_shop";
 
    $conn = mysqli_connect($dbServer, $dbUser, $dbPass);
@@ -38,7 +38,7 @@ if (isset($_POST['act'])) {
         $nama = explode("@", $email)[0];
         $pass = password_hash($_POST['pass'], PASSWORD_BCRYPT);
 
-        $query = "INSERT INTO user VALUES (null, '$nama', '$email', '$pass', null, null, null)";
+        $query = "INSERT INTO user VALUES (null, '$nama', '$email', '$pass', null, null, null, 0)";
 
         if (mysqli_query(connection(), $query)) {
             echo "Silahkan Login";
@@ -60,7 +60,8 @@ if (isset($_POST['act'])) {
                 echo "Login berhasil";
                 $_SESSION['user'] = array(
                     'id' => $data['id_user'],
-                    'nama' => $data['nama_user']
+                    'nama' => $data['nama_user'],
+                    'gambar' => $data['foto_user']
                 );
             } else {
                 echo "Email atau Password Salah";

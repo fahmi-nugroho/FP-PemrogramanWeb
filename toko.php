@@ -44,7 +44,7 @@ include('conn.php');
       <div class="col-md-2 bg-light mt-2 pr-3 pt-3">
         <ul class="nav flex-column ml-3 mb-3">
           <li class="nav-item">
-            <a class="nav-link active text-dark" href="dashboard.html"><i class="fas fa-user mr-2"></i> Profil</a><hr>
+            <a class="nav-link active text-dark" href="dashboard.php"><i class="fas fa-user mr-2"></i> Profil</a><hr>
           </li>
           <li class="nav-item">
             <a class="nav-link text-dark" href="toko.php"><i class="fas fa-store mr-2"></i> Toko</a>
@@ -80,7 +80,7 @@ include('conn.php');
                 }else{
 	                  $query="SELECT * FROM produk WHERE penjual= ".$_SESSION['user']['id'];
 	                  $result=mysqli_query(connection(),$query);
-	            
+
                }
                   $no=1;
                 ?>
@@ -114,7 +114,7 @@ include('conn.php');
                 <td><?php echo $data['stok']?></td>
                 <td><button id="edit" type="button" class="btn btn-warning" name="button" data-toggle="modal" data-target="#editBarang"  data-id_produk="<?= $data['id_produk'];?>" data-id_kategori="<?= $data['id_kategori'];?>"  data-nama_produk="<?= $data['nama_produk'];?>" data-deskripsi="<?= $data['deskripsi'];?>" data-harga="<?= $data['harga'];?>" data-stok="<?= $data['stok'];?>"data-gambar="<?= $data['gambar'];?>">Edit</button> <button id="hapus" type="button" class="btn btn-danger" name="button" data-toggle="modal" data-target="#hapusBarang" data-id_produk="<?= $data['id_produk'];?>">Hapus</button></td>
               </tr>
-              <?php endwhile?> 
+              <?php endwhile?>
             </tbody>
           </table>
           <button type="button" class="btn btn-dark" name="button" data-toggle="modal" data-target="#tambahBarang">Tambah Barang</button>
@@ -271,7 +271,7 @@ include('conn.php');
 <script>
       $(document).on("click","#hapus", function(){
         let id_produk=$(this).data('id_produk');
-       
+
         $(".modal-body #id_produk").val(id_produk);
       });
     </script>
