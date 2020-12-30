@@ -101,7 +101,7 @@
           echo "<img src='assets/img/".$data['foto_user']."' style='width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;'>";
         }
         ?>
-        <h5><a href="" class="" data-toggle="tooltip" title="Keluar" id="logout"><i class="fas fa-sign-out-alt mt-2 ml-2 text-dark"></i></a></h5>
+        <h5><a href="logout.php" class="" data-toggle="tooltip" title="Keluar"><i class="fas fa-sign-out-alt mt-2 ml-2 text-dark"></i></a></h5>
       </div>
     </nav>
 
@@ -270,16 +270,6 @@
             return false;
         }
         return true;
-    });
-  });
-  $("#logout").on("click", function () {
-    $.ajax({
-      type: "POST",
-      url: "conn.php",
-      data: "action=logout",
-      success: function(data){
-          alert("Anda Berhasil Logout");
-      }
     });
   });
 </script>
