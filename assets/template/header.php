@@ -42,6 +42,10 @@
         <?php endif; ?>
       </div>
     </nav>
+<<<<<<< HEAD
+=======
+
+>>>>>>> deeb6f912aab6de114034ae3fc85698724799708
     <div class="modal fade" id="login" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -70,6 +74,10 @@
         </div>
       </div>
     </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> deeb6f912aab6de114034ae3fc85698724799708
     <div class="modal fade" id="register" tabindex="-1" aria-labelledby="registerLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -109,6 +117,10 @@
         </div>
       </div>
     </div>
+<<<<<<< HEAD
+=======
+
+>>>>>>> deeb6f912aab6de114034ae3fc85698724799708
     <div class="modal fade" id="cart" tabindex="-1" aria-labelledby="cartLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -119,9 +131,17 @@
             </button>
           </div>
           <div class="modal-body">
+<<<<<<< HEAD
             <table class="table dataCart">
 
             </table>
+=======
+                <div class="table-responsive-md">
+                    <table class="table dataCart">
+
+                    </table>
+                </div>
+>>>>>>> deeb6f912aab6de114034ae3fc85698724799708
             <hr style="width: 50%">
             <div class="row">
               <p class="ml-auto mr-5">Total Harga</p>
@@ -177,6 +197,7 @@
             if (email.hasClass("is-valid") &&
                 pass.hasClass("is-valid") &&
                 newPass.hasClass("is-valid")) {
+<<<<<<< HEAD
                     $.ajax({
                         type: "POST",
                         url: "conn.php",
@@ -195,6 +216,26 @@
                             }
                         }
                     })
+=======
+                $.ajax({
+                    type: "POST",
+                    url: "conn.php",
+                    data: "act=cekEmail&data=" + email.val(),
+                    success: function(data){
+                        if (data > 0) {
+                            $("#fbEmailRegis").html("Email telah terdaftar");
+                            email.addClass('is-invalid').removeClass('is-valid');
+                        } else {
+                            register(email.val(), pass.val());
+                            $("#register").modal('hide');
+                            $("#login").modal('show');
+                            email.removeClass("is-valid").val("");
+                            pass.removeClass("is-valid").val("");
+                            newPass.removeClass("is-valid").val("");
+                        }
+                    }
+                })
+>>>>>>> deeb6f912aab6de114034ae3fc85698724799708
             }
         }
 
@@ -242,7 +283,12 @@
                 url: "dataCart.php",
                 data: "action=total",
                 success: function(data){
+<<<<<<< HEAD
                     $(".TotalHarga").html(data);
+=======
+                    $(".TotalHarga").html(JSON.parse(data).harga);
+                    $("#btnCO").html("Checkout (" + JSON.parse(data).total + ")");
+>>>>>>> deeb6f912aab6de114034ae3fc85698724799708
                 }
             })
         }

@@ -8,7 +8,7 @@ function connection() {
 
    $conn = mysqli_connect($dbServer, $dbUser, $dbPass);
 
-   if(! $conn) {
+   if(!$conn) {
 	die('Koneksi gagal: ' . mysqli_error());
    }
    //memilih database yang akan dipakai
@@ -35,9 +35,10 @@ if (isset($_POST['act'])) {
         echo mysqli_num_rows($result);
     } elseif ($_POST['act'] == "regis") {
         $email = $_POST['email'];
+        $nama = explode("@", $email)[0];
         $pass = password_hash($_POST['pass'], PASSWORD_BCRYPT);
 
-        $query = "INSERT INTO user VALUES (null, '$email', '$email', '$pass', null, null, null)";
+        $query = "INSERT INTO user VALUES (null, '$nama', '$email', '$pass', null, null, null)";
 
         if (mysqli_query(connection(), $query)) {
             echo "Silahkan Login";
