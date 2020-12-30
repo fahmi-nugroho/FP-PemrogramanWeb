@@ -69,5 +69,9 @@ if (isset($_POST['act'])) {
         } else {
             echo "Email atau Password Salah";
         }
+    } elseif ($_POST['act'] == "logout") {
+        unset($_SESSION['cart']);
+        unset($_SESSION['user']);
+        redirect("dashboard.php");
     }
 }
