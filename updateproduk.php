@@ -1,7 +1,8 @@
 <?php
 include('conn.php');
 
-
+ 
+ 
                 if($_SERVER['REQUEST_METHOD']=='POST'){
                    if(isset($_POST['update'])){
                       $id_produk=$_POST['id_produk'];
