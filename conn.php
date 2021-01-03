@@ -3,7 +3,7 @@ function connection() {
    // membuat konekesi ke database system
    $dbServer = 'localhost';
    $dbUser = 'root';
-   $dbPass = '';
+   $dbPass = 'bengkulu10';
    $dbName = "online_shop";
 
    $conn = mysqli_connect($dbServer, $dbUser, $dbPass);
