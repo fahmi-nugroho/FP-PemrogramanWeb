@@ -51,9 +51,14 @@
           <h4 class="text-center font-weight-bold m-4">PRODUK TERBARU</h4>
           <div class="row justify-content-center mx-auto">
             <?php
-              $query = "SELECT * FROM produk WHERE stok > 0 ORDER BY id_produk DESC";
-              $result = mysqli_query(connection(), $query);
-              while ($data = mysqli_fetch_array($result)):
+                // if (isset($_SESSION['user']['id'])) {
+                //     $query = "SELECT * FROM produk WHERE stok > 0 AND penjual != ".$_SESSION['user']['id']." ORDER BY id_produk DESC";
+                // } else {
+                // }
+
+                $query = "SELECT * FROM produk WHERE stok > 0 ORDER BY id_produk DESC";
+                $result = mysqli_query(connection(), $query);
+                while ($data = mysqli_fetch_array($result)):
             ?>
             <div class="card mr-2 ml-2 mb-3" style="width: 16rem;">
               <img src="assets/img/<?php echo $data['gambar'] ?>" class="card-img-top" alt="...">
@@ -62,6 +67,7 @@
                     <?php
                         $desc = $data['nama_produk'];
                         $trim = substr($desc,0,38);
+
                         if (strlen($desc) > 40) {
                             echo $trim."...";
                         } else {
@@ -121,7 +127,7 @@
                       <table class="table table-borderless">
                         <tr>
                           <th>Toko</th>
-                          <td><?php echo $data['penjual'] ?></td>
+                          <td><?php echo mysqli_fetch_array(mysqli_query(connection(), "SELECT nama_user FROM user WHERE id_user =".$data['penjual']))[0] ?></td>
                         </tr>
                         <tr>
                           <th>Produk</th>
@@ -201,11 +207,15 @@
                     url: "dataCart.php",
                     data: "action=tambah&id=" + id,
                     success: function(data){
-                        alert("Berhasil ditambahkan");
-                        viewCart();
-                        $("#AC-"+id).attr('onclick', "addCarts(" + (++cart) + ", " + stok + ", " + id + ")");
-                        if (cart == stok) {
-                            $("#AC-"+id).prop('disabled', true);
+                        if (data == "sama") {
+                            alert("Tidak bisa membeli barang sendiri");
+                        } else {
+                            alert("Berhasil ditambahkan");
+                            viewCart();
+                            $("#AC-"+id).attr('onclick', "addCarts(" + (++cart) + ", " + stok + ", " + id + ")");
+                            if (cart == stok) {
+                                $("#AC-"+id).prop('disabled', true);
+                            }
                         }
                     }
                 })

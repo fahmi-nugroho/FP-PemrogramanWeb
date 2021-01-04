@@ -42,11 +42,10 @@
         redirect('dashboard.php');
       }
 
-      $namaFileBaru = uniqid();
-      $namaFileBaru .= '.';
-      $namaFileBaru .= $ekstensiGambar;
+      $namaFileBaru = uniqid() . '.' . $ekstensiGambar;
+      $tujuan = 'assets/img/'.$namaFileBaru;
 
-      move_uploaded_file($tmpName, 'assets/img/'.$namaFileBaru);
+      move_uploaded_file($tmpName, $tujuan);
       $gambar = $namaFileBaru;
     }
 
@@ -112,7 +111,10 @@
             <a class="nav-link active text-dark" href="dashboard.html"><i class="fas fa-user mr-2"></i> Profil</a><hr>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" href="toko.php"><i class="fas fa-store mr-2"></i> Toko</a>
+            <a class="nav-link text-dark" href="toko.php"><i class="fas fa-store mr-2"></i> Toko</a><hr>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark" href="penjualan.php"><i class="fas fa-store mr-2"></i> Penjualan</a>
           </li>
         </ul>
       </div>

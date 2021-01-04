@@ -18,7 +18,7 @@ function connection() {
 }
 
 function message($msg){
-    echo "<script>alert('$msg');</script>";
+    // echo "<script>alert('$msg');</script>";
 }
 
 function redirect($link){
@@ -35,7 +35,7 @@ if (isset($_POST['act'])) {
         echo mysqli_num_rows($result);
     } elseif ($_POST['act'] == "regis") {
         $email = $_POST['email'];
-        $nama = explode("@", $email)[0];
+        $nama = strtolower(explode("@", $email)[0]);
         $pass = password_hash($_POST['pass'], PASSWORD_BCRYPT);
 
         $query = "INSERT INTO user VALUES (null, '$nama', '$email', '$pass', null, null, null, 0)";

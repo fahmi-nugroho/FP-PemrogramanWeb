@@ -12,12 +12,17 @@ if (isset($_POST['action'])) {
                 $produk = mysqli_query(connection() ,$query);
                 $data = mysqli_fetch_array($produk);
 
-                if (isset($_SESSION['cart']['cart_'.$id]) && $_SESSION['cart']['cart_'.$id] < $data['stok']) {
-                    $_SESSION['cart']['cart_'.$id] ++;
+                if ($_SESSION['user']['id'] == $data['penjual']) {
+                    echo "sama";
                 } else {
-                    $_SESSION['cart']['total'] += 1;
-                    $_SESSION['cart']['cart_'.$id] = 1;
+                    if (isset($_SESSION['cart']['cart_'.$id]) && $_SESSION['cart']['cart_'.$id] < $data['stok']) {
+                        $_SESSION['cart']['cart_'.$id] ++;
+                    } else {
+                        $_SESSION['cart']['total'] += 1;
+                        $_SESSION['cart']['cart_'.$id] = 1;
+                    }
                 }
+
             } elseif ($action == "kurang") {
                 if ($_SESSION['cart']['cart_'.$id] > 1) {
                     $_SESSION['cart']['cart_'.$id] --;
@@ -43,7 +48,7 @@ if (isset($_POST['action'])) {
             }
 
             echo json_encode(array(
-                'harga' => "Rp. ".number_format($price, 2, ',', '.'),
+                'harga' => "Rp ".number_format($price, 2, ',', '.'),
                 'total' =>  (isset($_SESSION['cart'])) ? $_SESSION['cart']['total'] : "0"
             ));
         } elseif ($action == "view") {
@@ -68,7 +73,7 @@ if (isset($_POST['action'])) {
                             $data = mysqli_fetch_array($produk); ?>
                             <tr>
                                 <th scope="row" class="align-middle"><?= ++$no ?></th>
-                                <td class="align-middle"><?= $data['penjual'] ?></td>
+                                <td class="align-middle"><?= mysqli_fetch_array(mysqli_query(connection(), "SELECT nama_user FROM user WHERE id_user =".$data['penjual']))[0] ?></td>
                                 <td><img src="assets/img/<?= $data['gambar'] ?>" style="width:60px; height:60px" alt=""></td>
                                 <td class="align-middle"><?= wordwrap($data['nama_produk'], 25, "<br>") ?></td>
                                 <td class="align-middle"><?= number_format($data['harga'], 2, ',', '.') ?></td>
@@ -122,7 +127,7 @@ if (isset($_POST['action'])) {
             for ($i = 0; $i < count($toko); $i ++) {
                 $totalpt = 0; ?>
 
-                <h5 class="my-3"><?= $toko[$i] ?></h5> <?php
+                <h5 class="my-3"><?= mysqli_fetch_array(mysqli_query(connection(), "SELECT nama_user FROM user WHERE id_user =".$toko[$i]))[0] ?></h5> <?php
 
                 foreach ($cart as $key => $value):
                     if ($value[1] == $toko[$i]): ?>
@@ -193,60 +198,77 @@ if (isset($_POST['action'])) {
             $result = mysqli_query(connection(), $query);
             $data = mysqli_fetch_array($result);
 
-            $total = $tbrg = 0;
+            $idorder = time();
+            $tgl = date("d/m/Y");
+
+            $cart = $toko = array();
+            $totalpt = 0;
+
             foreach ($_SESSION['cart'] as $key => $value) {
                 if (substr($key,0,5) == "cart_") {
                     $id = substr($key, 5);
 
                     $query = "SELECT * FROM produk WHERE id_produk = $id";
-                    $rs2 = mysqli_query(connection(), $query);
-                    $produk = mysqli_fetch_array($rs2);
+                    $sql = mysqli_query(connection(), $query);
+                    $produk = mysqli_fetch_array($sql);
 
-                    $total += $produk['harga'] * $value;
-                    $tbrg += $value;
+                    if ($produk[6] < $value) {
+                        unset($_SESSION['cart'][$key]);
+                        $_SESSION['cart']['total']--;
+                        echo "Terdapat barang yang melebihi stok, silahkan input barang ulang";
+                        die();
+                    }
+
+                    array_push($cart, array('id' => $id, 'penjual' => $produk[2], 'nama' => $produk[3], 'harga' => $produk[5], 'stok' => $produk[6]));
+                    array_push($toko, $produk['penjual']);
                 }
             }
 
-            $idorder = time();
-            $tgl = date("d/m/Y");
+            $toko = array_unique($toko);
+            for ($i = 0; $i < count($toko); $i ++) {
+                $totalpt = 0;
 
-            $total = $total + ($ongkir * $tbrg);
-
-            $query = "INSERT INTO daftar_order VALUES ($idorder, $data[0], '$data[1]', '$tgl', '$data[5]', '$data[4]', '$total', '$kurir', '$bayar', 'Menunggu Pembayaran')";
-
-            if (mysqli_query(connection(), $query)) {
-                $error = 0;
-                foreach ($_SESSION['cart'] as $key => $value) {
-                    if (substr($key,0,5) == "cart_") {
-                        $id = substr($key, 5);
-                        $pro = mysqli_query(connection(), "SELECT * FROM produk WHERE id_produk = $id");
-                        $duk = mysqli_fetch_array($pro);
-
-                        if ($duk['stok'] >= $value) {
-                            $stok = $duk['stok'] - $value;
-                            if (mysqli_query(connection(), "UPDATE produk SET stok = $stok WHERE id_produk = $id")) {
-                                if (!mysqli_query(connection(), "INSERT INTO order_detail VALUES (null, $idorder, $id, $value, $duk[5])")) {
-                                    $error++;
-                                }
-                            } else {
-                                $error++;
-                            }
-                        } else {
-                            $error++;
-                        }
+                foreach ($cart as $key => $value) {
+                    if ($value['penjual'] == $toko[$i]){
+                        $totalpt += $value['harga'] * $_SESSION['cart']['cart_'.$value['id']];
                     }
                 }
+                //
+                $totalpt += $totalpt + $ongkir;
 
-                if ($error == 0) {
-                    echo "Silahkan Melakukan Pembayaran";
-                } else {
-                    echo "Checkout Error";
-                }
-                
-                unset($_SESSION['cart']);
-            } else {
-                echo "Order Gagal, Coba Ulangi Kembali";
+                $query = "INSERT INTO daftar_order VALUES (NULL,
+                            $idorder,
+                            ".$data['id_user'].",
+                            ".$toko[$i].",
+                            '".$data['nama_user']."',
+                            '$tgl',
+                            '".$data['alamat_user']."',
+                            '".$data['telepon_user']."',
+                            '$totalpt', '$kurir', '$bayar',
+                            'Menunggu Pembayaran')";
+
+                if (mysqli_query(connection(), $query)) {
+                    foreach ($cart as $key => $value) {
+                        if ($value['penjual'] == $toko[$i]){
+                            $jml = $_SESSION['cart']['cart_'.$value['id']];
+                            $stok = $value['stok'] - $jml;
+
+                            if (mysqli_query(connection(), "UPDATE produk SET stok = $stok WHERE id_produk = ".$value['id'])) {
+                                $query = "SELECT * FROM daftar_order WHERE id_order = $idorder AND id_penjual = ".$value['penjual'];
+                                $sql = mysqli_query(connection(), $query);
+                                $do = mysqli_fetch_array($sql);
+
+                                if (mysqli_query(connection(), "INSERT INTO order_detail VALUES (NULL, $do[0], $idorder, ".$value['id'].", $jml, ".$value['harga'].")")) {
+                                    unset($cart[$key]);
+                                } else message($sql);
+                            } else message($sql);
+                        }
+                    }
+                } else message($sql);
             }
+
+            unset($_SESSION['cart']);
+            echo "Silahkan Melakukan Pembayaran";
         }
 }
 ?>

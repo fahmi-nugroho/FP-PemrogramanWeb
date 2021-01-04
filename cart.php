@@ -64,10 +64,18 @@
             } else {
                 $oke = 1;
             }
+
+            if (isset($_SESSION['cart']) && $_SESSION['cart']['total'] > 0) {
+                $buka = 1;
+            } else {
+                $buka = 0;
+            }
         ?>
 
         if (<?= $oke ?> == 0) {
             alert("Mohon lengkapi data diri");
+        } else if (<?= $buka ?> == 0) {
+            alert("Cart Kosong");
         } else {
             $.ajax({
                 type: "POST",
@@ -101,6 +109,11 @@
     }
 
     function bayarck() {
+        <?php
+            $query = "SELECT * FROM user WHERE id_user = ".$_SESSION['user']['id'];
+            $result = mysqli_query(connection(), $query);
+            $data = mysqli_fetch_array($result);
+        ?>
         var kurir = $("#ongkir");
         var bayar = $("#bayar");
 
@@ -113,8 +126,17 @@
             ongkir = 35000;
         }
 
+        var str = $(".TotalHarga").html().trim();
+        var arr = str.split(",")[0].split(".");
+        var trx = "";
+        for(var x = 0; x < arr.length; x ++){
+            trx += arr[x];
+        }
+
         if (kurir.val() == 0 || bayar.val() == 0) {
             alert("Mohon pilih ongkir dan metode pembayaran");
+        } else if (bayar.val() == "Wallet" && (<?= $data['wallet'] ?> < trx.substr(2))) {
+            alert("Maaf, saldo wallet anda kurang");
         } else {
             $.ajax({
                 type: "POST",
@@ -122,7 +144,7 @@
                 data: "action=checkout&kurir=" + kurir.val() + "&bayar=" + bayar.val() + "&ongkir=" + ongkir,
                 success: function(data){
                     alert(data);
-                    window.location = window.location.href;
+                    // window.location = window.location.href;
                 }
             })
         }

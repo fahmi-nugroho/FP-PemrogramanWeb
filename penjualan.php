@@ -3,19 +3,19 @@ session_start();
 require 'conn.php';
 
 if(!isset($_SESSION['user'])){
-    die("<b>Oops!</b> Access Failed.
-        <p>Sistem Logout. Anda harus melakukan Login kembali.</p>
-        <button type='button' onclick=location.href='index.php'>Back</button>");
+    message("Mohon login terlebih dahulu");
+    redirect("index.php");
 } else {
     $query = "SELECT * FROM user WHERE id_user = ".$_SESSION['user']['id'];
     $result = mysqli_query(connection(),$query);
     $data = mysqli_fetch_array($result);
 
-    if (!isset($data['telepon_user']) || !isset($data['alamat_user']) || !isset($data['foto_user'])) {
-        message("Mohon lengkapi profil terlebih dahulu");
-        redirect("dashboard.php");
-    }
-} ?>
+    // if (!isset($data['telepon_user']) || !isset($data['alamat_user']) || !isset($data['foto_user'])) {
+    //     message("Mohon lengkapi profil terlebih dahulu");
+    //     redirect("dashboard.php");
+    // }
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -28,7 +28,7 @@ if(!isset($_SESSION['user'])){
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
 
-    <title> Toko </title>
+    <title> Penjualan </title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -64,22 +64,23 @@ if(!isset($_SESSION['user'])){
         </ul>
       </div>
       <div class="col-md-10 p-5 pt-2">
-        <h3><i class="fas fa-store mr-2"></i> Toko </h3>
+        <h3><i class="fas fa-list-alt"></i> Daftar Penjualan</h3>
         <hr>
         <div class="row mt-2 mb-2">
-          <h4 class="mr-auto ml-auto"><i class="fas fa-box-open"></i> Produk Yang Dijual</h4>
+          <h4 class="mr-auto ml-auto"><i class="fas fa-file-invoice"></i> Daftar Order</h4>
         </div>
         <div class="row">
           <table class="table">
             <thead>
               <tr>
                 <th scope="col">No.</th>
-                <th scope="col">Produk</th>
-                <th scope="col">Nama Produk</th>
-                <th scope="col">Kategori</th>
-                <th scope="col">Deskripsi</th>
-                <th scope="col">Harga</th>
-                <th scope="col">Kuantitas</th>
+                <th scope="col">Tanggal</th>
+                <th scope="col">Nama Pembeli</th>
+                <th scope="col">Alamat</th>
+                <th scope="col">No Telp</th>
+                <th scope="col">Total Harga</th>
+                <th scope="col">Pembayaran</th>
+                <th scope="col">Status</th>
                 <th scope="col">Aksi</th>
               </tr>
             </thead>
@@ -87,11 +88,11 @@ if(!isset($_SESSION['user'])){
             	<?php
                if ($_SERVER['REQUEST_METHOD']=== 'POST')  {
                     $search=$_POST['cari'];
-                    $query="SELECT * FROM produk WHERE nama_produk='$search'";
-                    $result = mysqli_query(connection(),$query);
+                    // $query="SELECT * FROM daftar_order WHERE nama_produk='$search'";
+                    // $result = mysqli_query(connection(),$query);
                 }else{
-	                  $query="SELECT * FROM produk WHERE penjual= ".$_SESSION['user']['id'];
-	                  $result=mysqli_query(connection(),$query);
+	                  // $query="SELECT * FROM daftar_order WHERE penjual= ".$_SESSION['user']['id'];
+	                  // $result=mysqli_query(connection(),$query);
 
                }
                   $no=1;
