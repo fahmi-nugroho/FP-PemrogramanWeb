@@ -38,77 +38,148 @@ require 'conn.php';
             <button class="btn btn-dark" type="button">Daftar</button>
         </div>
     </nav>
-    <tbody>
-        <?php
+
+    <table class="table">
+        <h3>Voucher</h3>
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id Produk</th>
+                <th scope="col">Id Kategori</th>
+                <th scope="col">Penjual</th>
+                <th scope="col">Nama Produk</th>
+                <th scope="col">Deskripsi</th>
+                <th scope="col">Harga</th>
+                <th scope="col">Stok </th>
+                <th scope="col">Gambar</th>
+                <th scope="col">Update/Delete</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+                <?php
             $view = "SELECT * FROM produk";
             $res = mysqli_query(connection(),$view);
             ?>
 
-        <?php while($data = mysqli_fetch_array($res)) : ?>
-        <tr>
-            <td><?php echo $data['id_produk'] ?></td>
-            <td><?php echo $data['id_kategori'] ?></td>
-            <td><?php echo $data['penjual'] ?></td>
-            <td><?php echo $data['nama_produk'] ?></td>
-            <td><?php echo $data['harga'] ?></td>
-            <td><?php echo $data['stok'] ?></td>
-            <td>
-                <a href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_produk']?>">Update</a>
-                <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_produk']?>"
-                    onclick="return confirm('Hapus Data <?php echo $data['id_produk']?>')" ;>Delete</a>
-            </td>
-        </tr>
-        <?php endwhile; ?>
+                <?php while($data = mysqli_fetch_array($res)) : ?>
+            <tr>
+                <td><?php echo $data['id_produk'] ?></td>
+                <td><?php echo $data['id_kategori'] ?></td>
+                <td><?php echo $data['penjual'] ?></td>
+                <td><?php echo $data['nama_produk'] ?></td>
+                <td><?php echo $data['deskripsi'] ?></td>
+                <td><?php echo $data['harga'] ?></td>
+                <td><?php echo $data['stok'] ?></td>
+                <td><?php echo $data['gambar'] ?></td>
+                <td>
+                    <a
+                        href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_produk']?>">Update</a>
+                    <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_produk']?>"
+                        onclick="return confirm('Hapus Data <?php echo $data['id_produk']?>')" ;>Delete</a>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
 
 
-        <?php
+
+    <table class="table">
+        <br></br>
+        <h3>Voucher</h3>
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">id Voucher</th>
+                <th scope="col">Jenis Voucher</th>
+                <th scope="col">Gambar</th>
+                <th scope="col">Update/Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <?php
             $view = "SELECT * FROM voucher";
             $res = mysqli_query(connection(),$view);
             ?>
 
-        <?php while($data = mysqli_fetch_array($res)) : ?>
-        <tr>
-            <td><?php echo $data['id_voucher'] ?></td>
-            <td><?php echo $data['jenis_voucher'] ?></td>
-            <td><?php echo $data['gambar'] ?></td>
+                <?php while($data = mysqli_fetch_array($res)) : ?>
+            <tr>
+                <td><?php echo $data['id_voucher'] ?></td>
+                <td><?php echo $data['jenis_voucher'] ?></td>
+                <td><?php echo $data['gambar'] ?></td>
 
-            <td>
-                <a
-                    href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_voucher']?>">Update</a>
-                <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_voucher']?>"
-                    onclick="return confirm('Hapus Data <?php echo $data['id_voucher']?>')" ;>Delete</a>
-            </td>
-        </tr>
-        <?php endwhile; ?>
+                <td>
+                    <a
+                        href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_voucher']?>">Update</a>
+                    <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_voucher']?>"
+                        onclick="return confirm('Hapus Data <?php echo $data['id_voucher']?>')" ;>Delete</a>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+            </tr>
+            </tr>
+
+        </tbody>
+    </table>
 
 
-        <?php
+
+    <table class="table">
+        <br></br>
+        <h3>User</h3>
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id User</th>
+                <th scope="col">Nama User</th>
+                <th scope="col">Email User</th>
+                <th scope="col">Password User</th>
+                <th scope="col">Telepon User</th>
+                <th scope="col">Alamat User</th>
+                <th scope="col">Foto_User</th>
+                <th scope="col">Update/Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+                <?php
             $view = "SELECT * FROM user";
             $res = mysqli_query(connection(),$view);
             ?>
 
-        <?php while($data = mysqli_fetch_array($res)) : ?>
-        <tr>
-            <td><?php echo $data['id_user'] ?></td>
-            <td><?php echo $data['nama_user'] ?></td>
-            <td><?php echo $data['email_user'] ?></td>
-            <td><?php echo $data['pass_user'] ?></td>
-            <td><?php echo $data['telepon_user'] ?></td>
-            <td><?php echo $data['alamat_user'] ?></td>
-            <td><?php echo $data['foto_user'] ?></td>
-            <td>
-                <button type="button" class="btn btn-warning">Warning</button>
-                <a href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_user']?>">Update</a>
-                <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_user']?>"
-                    onclick="return confirm('Hapus Data <?php echo $data['id_user']?>')" ;>Delete</a>
+                <?php while($data = mysqli_fetch_array($res)) : ?>
+            <tr>
+                <td><?php echo $data['id_user'] ?></td>
+                <td><?php echo $data['nama_user'] ?></td>
+                <td><?php echo $data['email_user'] ?></td>
+                <td><?php echo $data['pass_user'] ?></td>
+                <td><?php echo $data['telepon_user'] ?></td>
+                <td><?php echo $data['alamat_user'] ?></td>
+                <td><?php echo $data['foto_user'] ?></td>
+                <td>
 
-            </td>
-        </tr>
-        <?php endwhile; ?>
+                    <a
+                        href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_user']?>">Update</a>
+                    <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_user']?>"
+                        onclick="return confirm('Hapus Data <?php echo $data['id_user']?>')" ;>Delete</a>
 
-        <script type="text/javascript" src="assets/js/jquery-3.5.1.min.js"></script>
-        <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript" src="assets/js/script.js"></script>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+
+            <script type="text/javascript" src="assets/js/jquery-3.5.1.min.js"></script>
+            <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
+            <script type="text/javascript" src="assets/js/script.js"></script>
+
+
+            </tr>
+            </tr>
+
+        </tbody>
+    </table>
+
 
 </body>
 

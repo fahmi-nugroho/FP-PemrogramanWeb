@@ -108,7 +108,7 @@
       <div class="col-md-2 bg-light mt-2 pr-3 pt-3">
         <ul class="nav flex-column ml-3 mb-3">
           <li class="nav-item">
-            <a class="nav-link active text-dark" href="dashboard.html"><i class="fas fa-user mr-2"></i> Profil</a><hr>
+            <a class="nav-link active text-dark" href="dashboard.php"><i class="fas fa-user mr-2"></i> Profil</a><hr>
           </li>
           <li class="nav-item">
             <a class="nav-link text-dark" href="toko.php"><i class="fas fa-store mr-2"></i> Toko</a><hr>

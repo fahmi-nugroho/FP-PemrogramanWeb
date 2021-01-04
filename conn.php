@@ -3,6 +3,7 @@ function connection() {
    // membuat konekesi ke database system
    $dbServer = 'localhost';
    $dbUser = 'root';
+   // $dbPass = 'bengkulu10';
    $dbPass = '';
    $dbName = "online_shop";
 
