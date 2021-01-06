@@ -1,4 +1,7 @@
 <?php
+
+date_default_timezone_set("Asia/Jakarta");
+
 function connection() {
    // membuat konekesi ke database system
    $dbServer = 'localhost';
@@ -19,7 +22,7 @@ function connection() {
 }
 
 function message($msg){
-    // echo "<script>alert('$msg');</script>";
+    echo "<script>alert('$msg');</script>";
 }
 
 function redirect($link){
@@ -49,7 +52,6 @@ if (isset($_POST['act'])) {
     } elseif ($_POST['act'] == "login") {
         $email = $_POST['email'];
         $pass = $_POST['pass'];
-
         $query = "SELECT * FROM user WHERE email_user = '$email'";
         $result = mysqli_query(connection(), $query);
 
@@ -74,5 +76,82 @@ if (isset($_POST['act'])) {
         unset($_SESSION['cart']);
         unset($_SESSION['user']);
         redirect("dashboard.php");
+    } elseif ($_POST['act'] == "updOrder") {
+        $id = $_POST['id'];
+        $status = $_POST['status'];
+
+        if ($status == "Menunggu Pengiriman") {
+            $bukti = $_POST['bukti'];
+        } elseif ($status == "Proses Pengiriman") {
+            $resi = $_POST['resi'];
+
+            $sql = "UPDATE daftar_order SET status = '$status', resi = $resi WHERE id = $id";
+            if (mysqli_query(connection(), $sql)) {
+                echo "Pengiriman Dilakukan";
+            } else {
+                echo "Pengiriman Gagal";
+            }
+        } elseif ($status == "Pesanan Dibatalkan") {
+            $query = "SELECT * FROM daftar_order WHERE id = $id";
+            $result = mysqli_query(connection(), $query);
+            $data = mysqli_fetch_array($result);
+            $error = 0;
+
+            if (!empty($data['bukti'])) {
+                $myquery = "SELECT * FROM user WHERE id_user = ".$data['id_user'];
+                $hasilpro = mysqli_query(connection(), $myquery);
+                $user = mysqli_fetch_array($hasilpro);
+
+                $wallet = $user['wallet'] + $data['total'];
+                $sql = "UPDATE user SET wallet = '$wallet' WHERE id_user = ".$data['id_user'];
+                if (!mysqli_query(connection(), $sql)) {
+                    $error ++;
+                }
+            }
+
+            if ($error == 0) {
+                $sql = "UPDATE daftar_order SET status = '$status' WHERE id = $id";
+                if (mysqli_query(connection(), $sql)) {
+                    $sqli = "SELECT * FROM order_detail WHERE id_daftar = ".$data['id'];
+                    $hasil = mysqli_query(connection(), $sqli);
+
+                    while ($detail = mysqli_fetch_array($hasil)){
+                        $myquery = "SELECT * FROM produk WHERE id_produk = ".$detail['id_barang'];
+                        $hasilpro = mysqli_query(connection(), $myquery);
+                        $produk = mysqli_fetch_array($hasilpro);
+
+                        $stok = $produk['stok'] + $detail['jumlah'];
+                        mysqli_query(connection(), "UPDATE produk SET stok = $stok WHERE id_produk = ".$detail['id_barang']);
+                    }
+                    echo "Pembatalan Berhasil";
+                } else {
+                    echo "Pembatalan Gagal";
+                }
+            } else {
+                echo "Pembatalan Gagal";
+            }
+        }
+    // } elseif ($_POST['act'] == "read") {
+    //     $table = $_POST['table'];
+    //
+    //     $query = "SELECT * FROM $table";
+    //     $result = mysqli_query(connection(), $query);
+    //
+    //     $order = array();
+    //     if (isset($_POST['id'])) {
+    //         $id = $_POST['id'];
+    //         while ($data = mysqli_fetch_array($result)) {
+    //             if ($data[0] == $id) {
+    //                 $order = $data;
+    //                 break;
+    //             }
+    //         }
+    //     } else {
+    //         while ($data = mysqli_fetch_array($result)) {
+    //             array_push($order, $data);
+    //         }
+    //     }
+    //
+    //     echo json_encode($order);
     }
 }

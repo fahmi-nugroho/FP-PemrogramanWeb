@@ -113,6 +113,8 @@
             $query = "SELECT * FROM user WHERE id_user = ".$_SESSION['user']['id'];
             $result = mysqli_query(connection(), $query);
             $data = mysqli_fetch_array($result);
+
+            $wallet = (empty($data['wallet'])) ? 0 : $data['wallet'] ;
         ?>
         var kurir = $("#ongkir");
         var bayar = $("#bayar");
@@ -135,7 +137,7 @@
 
         if (kurir.val() == 0 || bayar.val() == 0) {
             alert("Mohon pilih ongkir dan metode pembayaran");
-        } else if (bayar.val() == "Wallet" && (<?= $data['wallet'] ?> < trx.substr(2))) {
+        } else if (bayar.val() == "Wallet" && (<?= $wallet ?> < trx.substr(2))) {
             alert("Maaf, saldo wallet anda kurang");
         } else {
             $.ajax({
@@ -144,7 +146,7 @@
                 data: "action=checkout&kurir=" + kurir.val() + "&bayar=" + bayar.val() + "&ongkir=" + ongkir,
                 success: function(data){
                     alert(data);
-                    // window.location = window.location.href;
+                    window.location = window.location.href;
                 }
             })
         }

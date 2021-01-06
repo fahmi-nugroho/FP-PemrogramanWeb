@@ -51,11 +51,6 @@
           <h4 class="text-center font-weight-bold m-4">PRODUK TERBARU</h4>
           <div class="row justify-content-center mx-auto">
             <?php
-                // if (isset($_SESSION['user']['id'])) {
-                //     $query = "SELECT * FROM produk WHERE stok > 0 AND penjual != ".$_SESSION['user']['id']." ORDER BY id_produk DESC";
-                // } else {
-                // }
-
                 $query = "SELECT * FROM produk WHERE stok > 0 ORDER BY id_produk DESC";
                 $result = mysqli_query(connection(), $query);
                 while ($data = mysqli_fetch_array($result)):

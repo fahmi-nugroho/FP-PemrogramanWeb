@@ -279,8 +279,7 @@ if(!isset($_SESSION['user'])){
         $("#modalupdate #kuantitas").val(stok);
         $("#modalupdate #gambar").val(gambar);
       });
-    </script>
-<script>
+
       $(document).on("click","#hapus", function(){
         let id_produk=$(this).data('id_produk');
 
