@@ -114,9 +114,6 @@ if(!isset($_SESSION['user'])){
                           elseif($data['id_kategori']== '3'){
                             echo "Aksesoris Game";
                           }
-                          else{
-                            echo "Voucher Game";
-                          }
 
                       ?>
 
@@ -200,7 +197,6 @@ if(!isset($_SESSION['user'])){
                         <option value="2" selected>Console</option>
                         <option value="1">Game</option>
                         <option value="3">Aksesoris</option>
-                        <option value="4">Voucher game</option>
                       </select>
                     </div>
                     <div class="form-group">
@@ -222,7 +218,7 @@ if(!isset($_SESSION['user'])){
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-success" name="update">Tambah</button>
+                  <button type="submit" class="btn btn-success" name="update">Edit</button>
                   </form>
                 </div>
               </div>
