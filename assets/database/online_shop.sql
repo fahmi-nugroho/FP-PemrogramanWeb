@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 30, 2020 at 12:43 AM
+-- Generation Time: Jan 07, 2021 at 07:30 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.19
 
@@ -64,8 +64,10 @@ INSERT INTO `categories` (`id_kategori`, `nama`) VALUES
 --
 
 CREATE TABLE `daftar_order` (
+  `id` int(11) NOT NULL,
   `id_order` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
+  `id_penjual` int(11) NOT NULL,
   `nama` varchar(200) NOT NULL,
   `tanggal` varchar(50) NOT NULL,
   `alamat` text NOT NULL,
@@ -73,15 +75,21 @@ CREATE TABLE `daftar_order` (
   `total` varchar(50) NOT NULL,
   `kurir` varchar(25) NOT NULL,
   `pembayaran` varchar(50) NOT NULL,
-  `status` varchar(50) NOT NULL
+  `status` varchar(50) NOT NULL,
+  `bukti` varchar(100) DEFAULT NULL,
+  `resi` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `daftar_order`
 --
 
-INSERT INTO `daftar_order` (`id_order`, `id_user`, `nama`, `tanggal`, `alamat`, `no_telp`, `total`, `kurir`, `pembayaran`, `status`) VALUES
-(1609156090, 2, 'rifan', '28/12/2020', 'Perumahan Sejahtera', '087755565562', '525000', 'JNE', 'Merchant', 'Menunggu Pembayaran');
+INSERT INTO `daftar_order` (`id`, `id_order`, `id_user`, `id_penjual`, `nama`, `tanggal`, `alamat`, `no_telp`, `total`, `kurir`, `pembayaran`, `status`, `bukti`, `resi`) VALUES
+(7, 1609835888, 2, 4, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '9025000', 'JNE', 'Merchant', 'Menunggu Pembayaran', NULL, NULL),
+(8, 1609835888, 2, 3, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '10925000', 'JNE', 'Merchant', 'Proses Pengiriman', 'banner2.jpg', '10073474236'),
+(9, 1609867120, 2, 3, 'Rifan', '06/01/2021', 'Perumahan Sejahtera', '087755565562', '6030000', 'POS', 'Credit Card', 'Menunggu Pembayaran', NULL, NULL),
+(10, 1609956806, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '5035000', 'TIKI', 'Credit Card', 'Pesanan Dibatalkan', 'banner2.jpg', NULL),
+(11, 1609966704, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '8025000', 'JNE', 'Wallet', 'Menunggu Pengiriman', 'Wallet', NULL);
 
 -- --------------------------------------------------------
 
@@ -107,6 +115,7 @@ CREATE TABLE `news` (
 
 CREATE TABLE `order_detail` (
   `id_detail` int(11) NOT NULL,
+  `id_daftar` int(11) NOT NULL,
   `id_order` int(11) NOT NULL,
   `id_barang` int(11) NOT NULL,
   `jumlah` int(11) NOT NULL,
@@ -117,8 +126,14 @@ CREATE TABLE `order_detail` (
 -- Dumping data for table `order_detail`
 --
 
-INSERT INTO `order_detail` (`id_detail`, `id_order`, `id_barang`, `jumlah`, `harga`) VALUES
-(1, 1609156090, 4, 1, '500000');
+INSERT INTO `order_detail` (`id_detail`, `id_daftar`, `id_order`, `id_barang`, `jumlah`, `harga`) VALUES
+(8, 7, 1609835888, 5, 2, '4500000'),
+(9, 8, 1609835888, 3, 1, '900000'),
+(10, 8, 1609835888, 2, 2, '5000000'),
+(11, 9, 1609835888, 1, 2, '3000000'),
+(12, 10, 1609956806, 2, 1, '5000000'),
+(13, 11, 1609966704, 2, 1, '5000000'),
+(14, 11, 1609966704, 1, 1, '3000000');
 
 -- --------------------------------------------------------
 
@@ -129,13 +144,13 @@ INSERT INTO `order_detail` (`id_detail`, `id_order`, `id_barang`, `jumlah`, `har
 CREATE TABLE `produk` (
   `id_produk` int(5) NOT NULL,
   `id_kategori` int(4) NOT NULL,
-  `penjual` varchar(50) NOT NULL,
+  `penjual` int(11) NOT NULL,
   `nama_produk` varchar(50) NOT NULL,
   `deskripsi` text NOT NULL,
   `harga` double NOT NULL,
   `stok` int(3) NOT NULL,
   `stars` int(10) NOT NULL,
-  `gambar` varchar(20) NOT NULL
+  `gambar` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -143,11 +158,11 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`id_produk`, `id_kategori`, `penjual`, `nama_produk`, `deskripsi`, `harga`, `stok`, `stars`, `gambar`) VALUES
-(1, 2, 'YP', 'Playstation 4', 'Playstation 4', 3000000, 20, 7, 'produk1.png'),
-(2, 2, 'G Shop', 'Nintendo Switch', 'Nintendo Switch', 5000000, 10, 6, 'produk2.png'),
-(3, 3, 'G Shop', 'Controller Nintendo Switch', 'Controller Nintendo Switch', 900000, 15, 9, 'produk3.png'),
-(4, 1, 'G Shop', 'Zelda BOTW Nintendo Switch', 'Zelda BOTW Nintendo Switch', 500000, 0, 8, 'produk4.png'),
-(5, 1, 'KentuckyFans', 'Zelda Breath of the Wild Nintendo Switch (Baru)', 'Zelda BOTW Nintendo Switch', 4500000, 5, 10, 'produk4.png');
+(1, 2, 3, 'Playstation 4', 'Playstation 4', 3000000, 19, 7, 'produk1.png'),
+(2, 2, 3, 'Nintendo Switch', 'Nintendo Switch', 5000000, 10, 6, 'produk2.png'),
+(3, 3, 3, 'Controller Nintendo Switch', 'Controller Nintendo Switch', 900000, 15, 9, 'produk3.png'),
+(4, 1, 4, 'Zelda BOTW Nintendo Switch', 'Zelda BOTW Nintendo Switch', 500000, 10, 8, 'produk4.png'),
+(5, 1, 4, 'Zelda Breath of the Wild Nintendo Switch (Baru)', 'Zelda BOTW Nintendo Switch', 4500000, 3, 10, 'produk4.png');
 
 -- --------------------------------------------------------
 
@@ -184,8 +199,9 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `nama_user`, `email_user`, `pass_user`, `telepon_user`, `alamat_user`, `foto_user`, `wallet`) VALUES
-(1, 'a', 'a@a.a', 'a', '1', 'a', 'a', '0'),
-(2, 'rifan', 'rifan@gmail.com', '$2y$10$WrsIP90rBde.0Hgp4PHKFuxaW1OmFkQDfWJEF2ixhaeQyPaS4HvkK', '087755565562', 'Perumahan Sejahtera', NULL, '0');
+(2, 'Rifan', 'rifan@gmail.com', '$2y$10$WrsIP90rBde.0Hgp4PHKFuxaW1OmFkQDfWJEF2ixhaeQyPaS4HvkK', '087755565562', 'Perumahan Sejahtera', '5fec88299eb10.png', '2045000'),
+(3, 'Shop G', 'shopg@gmail.com', '$2y$10$UWRQWn4/EPE9VUw9aO7b6OD12U3PeBl50rU.cN2bnmAZjeBPNT.dK', '087755565561', NULL, NULL, NULL),
+(4, 'X-Shop', 'xshop@gmail.com', '$2y$10$wyZFLQZjqbGPYssq7EQIzejRsYMsRWTY7P9L0zp9HQgJXgbHPofXS', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -229,8 +245,11 @@ ALTER TABLE `categories`
 -- Indexes for table `daftar_order`
 --
 ALTER TABLE `daftar_order`
-  ADD PRIMARY KEY (`id_order`),
-  ADD KEY `fk_user_user` (`id_user`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `resi` (`resi`),
+  ADD KEY `fk_user_user` (`id_user`),
+  ADD KEY `fk_user_penjual` (`id_penjual`),
+  ADD KEY `id_order` (`id_order`);
 
 --
 -- Indexes for table `news`
@@ -244,14 +263,16 @@ ALTER TABLE `news`
 ALTER TABLE `order_detail`
   ADD PRIMARY KEY (`id_detail`),
   ADD KEY `fk_barang_produk` (`id_barang`),
-  ADD KEY `fk_order_order` (`id_order`);
+  ADD KEY `id_daftar` (`id_daftar`),
+  ADD KEY `fk_id_order` (`id_order`);
 
 --
 -- Indexes for table `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`id_produk`),
-  ADD KEY `id_kategori` (`id_kategori`);
+  ADD KEY `id_kategori` (`id_kategori`),
+  ADD KEY `penjual` (`penjual`);
 
 --
 -- Indexes for table `user`
@@ -284,6 +305,12 @@ ALTER TABLE `categories`
   MODIFY `id_kategori` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `daftar_order`
+--
+ALTER TABLE `daftar_order`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
@@ -293,7 +320,7 @@ ALTER TABLE `news`
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `produk`
@@ -305,7 +332,7 @@ ALTER TABLE `produk`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `voucher`
@@ -321,20 +348,23 @@ ALTER TABLE `voucher`
 -- Constraints for table `daftar_order`
 --
 ALTER TABLE `daftar_order`
+  ADD CONSTRAINT `fk_user_penjual` FOREIGN KEY (`id_penjual`) REFERENCES `user` (`id_user`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_user_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  ADD CONSTRAINT `fk_barang_produk` FOREIGN KEY (`id_barang`) REFERENCES `produk` (`id_produk`),
-  ADD CONSTRAINT `fk_order_order` FOREIGN KEY (`id_order`) REFERENCES `daftar_order` (`id_order`);
+  ADD CONSTRAINT `fk_barang_produk` FOREIGN KEY (`id_barang`) REFERENCES `produk` (`id_produk`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_id_daftar` FOREIGN KEY (`id_daftar`) REFERENCES `daftar_order` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_id_order` FOREIGN KEY (`id_order`) REFERENCES `daftar_order` (`id_order`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `produk`
 --
 ALTER TABLE `produk`
-  ADD CONSTRAINT `fk_kategori` FOREIGN KEY (`id_kategori`) REFERENCES `categories` (`id_kategori`);
+  ADD CONSTRAINT `fk_kategori` FOREIGN KEY (`id_kategori`) REFERENCES `categories` (`id_kategori`),
+  ADD CONSTRAINT `fk_penjual` FOREIGN KEY (`penjual`) REFERENCES `user` (`id_user`) ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
