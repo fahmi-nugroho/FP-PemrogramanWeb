@@ -71,6 +71,11 @@
 ?>
 
 <div class="container mt-5">
+  <div class="row justify-content-center mx-auto">
+    <div class="card mr-2 ml-2 mb-2" style="width: 16rem;">
+      <img src="assets/img/<?php echo $voucher['gambar'] ?>" class="card-img-top" alt="<?php echo $data['jenis_voucher'] ?>">
+    </div>
+  </div>
   <form method="post" action="voucher.php">
     <div class="form-group mb-3">
       <label for="id_voucher" class="form-label">Masukkan ID <?php echo $voucher['jenis_voucher'] ?> Anda</label>

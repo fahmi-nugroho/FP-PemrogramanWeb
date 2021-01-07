@@ -11,3 +11,13 @@
 .nav-link:hover {
   background-color: grey;
 }
+
+.produk img {
+  width: 254px;
+  height: 254px;
+}
+
+.produk-m img {
+  width: 395px;
+  height: 395px;
+}

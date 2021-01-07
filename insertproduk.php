@@ -11,7 +11,7 @@ if(isset($_POST['insertdata'])){
 		$stok=$_POST['stok'];
 		$gambar=$_FILES['gambar']['name'];
 		$tmp=$_FILES['gambar']['tmp_name'];
-		$folder= './assets/img/';
+		$folder= './assets/img/produk/';
 		$penjual = $_SESSION['user']['id'];
 
 		move_uploaded_file($tmp, $folder.$gambar);

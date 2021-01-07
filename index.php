@@ -49,14 +49,14 @@
           </div>
 
           <h4 class="text-center font-weight-bold m-4">PRODUK TERBARU</h4>
-          <div class="row justify-content-center mx-auto">
+          <div class="row justify-content-center mx-auto produk">
             <?php
                 $query = "SELECT * FROM produk WHERE stok > 0 ORDER BY id_produk DESC";
                 $result = mysqli_query(connection(), $query);
                 while ($data = mysqli_fetch_array($result)):
             ?>
             <div class="card mr-2 ml-2 mb-3" style="width: 16rem;">
-              <img src="assets/img/<?php echo $data['gambar'] ?>" class="card-img-top" alt="...">
+              <img src="assets/img/produk/<?php echo $data['gambar'] ?>" class="card-img-top gambar-produk-i" alt="...">
               <div class="card-body bg-light">
                 <h5 class="card-title">
                     <?php
@@ -104,7 +104,7 @@
             $result = mysqli_query(connection(), $query);
             while ($data = mysqli_fetch_array($result)):
           ?>
-          <div class="modal fade" id="produk<?php echo $data['id_produk'] ?>" tabindex="-1" aria-labelledby="produk<?php echo $data['id_produk'] ?>Label" aria-hidden="true">
+          <div class="modal fade produk-m" id="produk<?php echo $data['id_produk'] ?>" tabindex="-1" aria-labelledby="produk<?php echo $data['id_produk'] ?>Label" aria-hidden="true">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
                 <div class="modal-header">
@@ -116,7 +116,7 @@
                 <div class="modal-body">
                   <div class="row">
                     <div class="col-md-6">
-                      <img src="assets/img/<?php echo $data['gambar'] ?>" alt="">
+                      <img src="assets/img/produk/<?php echo $data['gambar'] ?>" alt="">
                     </div>
                     <div class="col-md-6">
                       <table class="table table-borderless">

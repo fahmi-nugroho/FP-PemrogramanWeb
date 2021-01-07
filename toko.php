@@ -100,7 +100,7 @@ if(!isset($_SESSION['user'])){
 
               <tr>
                 <td><?php echo $no++;?></td>
-                <td><img src="assets/img/<?= $data['gambar'] ?>" style="width:60px; height:60px" alt=""></td>
+                <td><img src="assets/img/produk/<?= $data['gambar'] ?>" style="width:60px; height:60px" alt=""></td>
                 <td><?php echo $data['nama_produk']?></td>
                  <td>
                       <?php
@@ -163,8 +163,15 @@ if(!isset($_SESSION['user'])){
                       <input type="text" id="deskripsi" name="deskripsi" class="form-control" value="">
                     </div>
                     <div class="form-group">
-                      <label for="gambar">Gambar</label>
-                      <input type="file" id="gambar" name="gambar" class="form-control" value="">
+                      <label for="inputGambar">Gambar</label>
+                      <div class="mb-3">
+                        <div class="input-group mb-3">
+                          <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGambar" name="gambar" aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGambar">Gambar</label>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                 </div>
                 <div class="modal-footer">

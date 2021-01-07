@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         $gambar = $_FILES['gambar']['name'];
         $tmp = $_FILES['gambar']['tmp_name'];
         // Set path folder tempat menyimpan fotonya
-        $path = './assets/img/';
+        $path = './assets/img/produk';
 
         // Proses upload
         if(move_uploaded_file($tmp, $path.$gambar)){ // Cek apakah gambar berhasil diupload atau tidak
@@ -21,8 +21,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
             $sql = mysqli_query(connection(), $query); // Eksekusi/Jalankan query dari variabel $query
             $data = mysqli_fetch_array($sql); // Ambil data dari hasil eksekusi $sql
             // Cek apakah file foto sebelumnya ada di folder images
-            if(is_file('./assets/img/'.$data['gambar'])) // Jika foto ada
-            unlink('./assets/img/'.$data['gambar']); // Hapus file foto sebelumnya yang ada di folder images
+            if(is_file('./assets/img/produk/'.$data['gambar'])) // Jika foto ada
+            unlink('./assets/img/produk/'.$data['gambar']); // Hapus file foto sebelumnya yang ada di folder images
 
             $sql="UPDATE produk SET id_kategori='$id_kategori',nama_produk='$nama_produk',deskripsi='$deskripsi',harga='$harga',stok='$stok',gambar='$gambar' WHERE id_produk='$id_produk'";
             $update=mysqli_query(connection(),$sql);

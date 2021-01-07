@@ -7,6 +7,10 @@
       redirect('index.php');
   }
 
+  $query = "SELECT * FROM user WHERE id_user = ".$_SESSION['user']['id'];
+  $result = mysqli_query(connection(), $query);
+  $data = mysqli_fetch_array($result);
+
   if (isset($_POST['password'])) {
     $pass = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $query = "UPDATE user SET pass_user='$pass' WHERE id_user = ".$_SESSION['user']['id'];
@@ -18,18 +22,26 @@
       message('Password Gagal Diubah');
     }
     redirect('dashboard.php');
+    echo $pass;
   }
 
   if (isset($_POST['nama'])) {
     $nama = $_POST['nama'];
-    $nomor = $_POST['nomorKontak'];
+    $nomor = $_POST['kontak'];
+    $alamat = $_POST['alamat'];
 
     $error = $_FILES['gambar']['error'];
 
-    if ($error === 4) {
-      $gambar = $data['foto_user'];
+    if ($error == 4) {
+      if (isset($data['foto_user'])) {
+        $gambar = $data['foto_user'];
+      }
+      else {
+        $gambar = null;
+      }
     }
     else {
+      unlink("./assets/img/profil/".$data['foto_user']);
       $nama_file = $_FILES['gambar']['name'];
       $tmpName = $_FILES['gambar']['tmp_name'];
 
@@ -43,13 +55,12 @@
       }
 
       $namaFileBaru = uniqid() . '.' . $ekstensiGambar;
-      $tujuan = 'assets/img/'.$namaFileBaru;
+      $tujuan = 'assets/img/profil/'.$namaFileBaru;
 
       move_uploaded_file($tmpName, $tujuan);
       $gambar = $namaFileBaru;
     }
-
-    $query = "UPDATE user SET nama_user='$nama', telepon_user='$nomor', foto_user='$gambar' WHERE id_user = ".$_SESSION['user']['id'];
+    $query = "UPDATE user SET nama_user='$nama', telepon_user='$nomor', alamat_user='$alamat', foto_user='$gambar' WHERE id_user = ".$_SESSION['user']['id'];
     $result = mysqli_query(connection(), $query);
     if ($result) {
       message('Profil Berhasil Diubah');
@@ -58,11 +69,9 @@
       message('Profil Gagal Diubah');
     }
     redirect('dashboard.php');
+    // message($nama.$nomor.$gambar);
   }
 
-  $query = "SELECT * FROM user WHERE id_user = ".$_SESSION['user']['id'];
-  $result = mysqli_query(connection(), $query);
-  $data = mysqli_fetch_array($result);
 ?>
 <!doctype html>
 <html lang="en">
@@ -94,10 +103,10 @@
         <h5 class="pt-2 mr-2"><?php echo $data['nama_user'] ?></h5>
         <?php
         if (strlen($data['foto_user']) === 0) {
-          echo "<img src='assets/img/playstation1.png' style='width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;'>";
+          echo "<img src='assets/img/profil/playstation1.png' style='width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;'>";
         }
         else {
-          echo "<img src='assets/img/".$data['foto_user']."' style='width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;'>";
+          echo "<img src='assets/img/profil/".$data['foto_user']."' style='width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;'>";
         }
         ?>
         <h5><a href="logout.php" class="" data-toggle="tooltip" title="Keluar"><i class="fas fa-sign-out-alt mt-2 ml-2 text-dark"></i></a></h5>
@@ -126,10 +135,10 @@
             <div class="card bg-dark ml-auto mr-auto text-white" style="width: 20rem;">
               <?php
               if (strlen($data['foto_user']) === 0) {
-                echo "<img src='assets/img/playstation1.png' style='width: 100px; height: 100px; border: 1px solid white; border-radius: 50%;' class='card-img-top mr-auto ml-auto mt-2'>";
+                echo "<img src='assets/img/profil/playstation1.png' style='width: 100px; height: 100px; border: 1px solid white; border-radius: 50%;' class='card-img-top mr-auto ml-auto mt-2'>";
               }
               else {
-                echo "<img src='assets/img/".$data['foto_user']."' style='width: 100px; height: 100px; border: 1px solid white; border-radius: 50%;' class='card-img-top mr-auto ml-auto mt-2'>";
+                echo "<img src='assets/img/profil/".$data['foto_user']."' style='width: 100px; height: 100px; border: 1px solid white; border-radius: 50%;' class='card-img-top mr-auto ml-auto mt-2'>";
               }
               ?>
               <div class="card-body">
@@ -185,10 +194,15 @@
                         <input type="text" class="form-control" name="nama" id="nama" value="<?php echo $data['nama_user'] ?>">
                       </div>
                       <div class="form-group">
+                        <label for="alamat">Alamat</label>
+                        <input type="text" class="form-control" name="alamat" id="alamat" value="<?php echo $data['alamat_user'] ?>">
+                      </div>
+                      <div class="form-group">
                         <label for="nomorKontak">Nomor Kontak</label>
                         <input type="text" class="form-control" name="kontak" id="nomorKontak" value="<?php echo $data['telepon_user'] ?>">
                       </div>
                       <div class="form-group">
+                        <label for="inputGambar">Gambar</label>
                         <div class="mb-3">
                           <div class="input-group mb-3">
                             <div class="custom-file">
