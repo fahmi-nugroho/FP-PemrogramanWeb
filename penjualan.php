@@ -170,13 +170,9 @@ if(!isset($_SESSION['user'])){
                                         </button>
                                     <?php endif; ?>
                                 </div>
-                                <div class="collapse" id="bukti-<?= $data['id'] ?>">
+                                <div class="collapse bukti" id="bukti-<?= $data['id'] ?>">
                                     <div class="card card-body mt-3 border border-success">
-                                        <?php if ($data['pembayaran'] == "Wallet"): ?>
-                                            Menggunakan Saldo Wallet
-                                        <?php else: ?>
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                                        <?php endif; ?>
+                                      <img class="mx-auto" src="assets/img/bukti/<?= $data['bukti'] ?>" alt="">
                                     </div>
                                 </div>
                                 <hr>
@@ -192,7 +188,7 @@ if(!isset($_SESSION['user'])){
                                     $produk = mysqli_fetch_array($que); ?>
 
                                     <div class="media mt-3">
-                                        <img src="assets/img/<?= $produk['gambar'] ?>" class="mr-3" style="width:64px; height:64px">
+                                        <img src="assets/img/produk/<?= $produk['gambar'] ?>" class="mr-3" style="width:64px; height:64px">
                                         <div class="media-body">
                                             <h6 class="mt-0"><?= $produk['nama_produk'] ?></h6>
                                             <div class="text-danger">Rp <?= number_format($produk['harga'], 2, ',', '.') ?></div>

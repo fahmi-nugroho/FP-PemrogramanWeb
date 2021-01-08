@@ -138,7 +138,7 @@
         if (kurir.val() == 0 || bayar.val() == 0) {
             alert("Mohon pilih ongkir dan metode pembayaran");
         } else if (bayar.val() == "Wallet" && (<?= $wallet ?> < trx.substr(2))) {
-            alert("Maaf, saldo wallet anda kurang");
+            alert("Saldo wallet tidak mencukupi, silahkan top-up terlebih dahulu.");
         } else {
             $.ajax({
                 type: "POST",

@@ -12,6 +12,11 @@
   background-color: grey;
 }
 
+.banner img {
+  width: 1980px;
+  height: 500px;
+}
+
 .produk img {
   width: 254px;
   height: 254px;
@@ -20,4 +25,9 @@
 .produk-m img {
   width: 395px;
   height: 395px;
+}
+
+.bukti img {
+  width: 300px;
+  height: auto;
 }

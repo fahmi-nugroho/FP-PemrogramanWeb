@@ -77,7 +77,7 @@ if (isset($_POST['action'])) {
                         <tr>
                             <th scope="row" class="align-middle"><?= ++$no ?></th>
                             <td class="align-middle"><?= mysqli_fetch_array(mysqli_query(connection(), "SELECT nama_user FROM user WHERE id_user =".$data['penjual']))[0] ?></td>
-                            <td><img src="assets/img/<?= $data['gambar'] ?>" style="width:60px; height:60px" alt=""></td>
+                            <td><img src="assets/img/produk/<?= $data['gambar'] ?>" style="width:60px; height:60px" alt=""></td>
                             <td class="align-middle"><?= wordwrap($data['nama_produk'], 25, "<br>") ?></td>
                             <td class="align-middle"><?= number_format($data['harga'], 2, ',', '.') ?></td>
                             <td class="align-middle text-center" colspan="2">
@@ -137,7 +137,7 @@ if (isset($_POST['action'])) {
             foreach ($cart as $key => $value):
                 if ($value[1] == $toko[$i]): ?>
                     <div class="media mt-3">
-                        <img src="assets/img/<?= $value[4] ?>" class="mr-3" style="width:64px; height:64px">
+                        <img src="assets/img/produk/<?= $value[4] ?>" class="mr-3" style="width:64px; height:64px">
                         <div class="media-body">
                             <h6 class="mt-0"><?= $value[2] ?></h6>
                             <div class="text-danger">Rp <?= number_format($value[3], 2, ',', '.') ?></div>
@@ -266,7 +266,7 @@ if (isset($_POST['action'])) {
                             '".$data['telepon_user']."',
                             '$totalpt', '$kurir', '$bayar',
                             'Menunggu Pengiriman',
-                            'Wallet', NULL)";
+                            'wallet.png', NULL)";
                 } else {
                     $query = "INSERT INTO daftar_order VALUES (NULL,
                             $idorder,

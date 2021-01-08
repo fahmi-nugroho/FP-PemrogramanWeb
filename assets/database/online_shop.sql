@@ -2,10 +2,10 @@
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jan 07, 2021 at 07:30 AM
--- Server version: 5.7.24
--- PHP Version: 7.2.19
+-- Host: 127.0.0.1
+-- Generation Time: Jan 08, 2021 at 07:18 AM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.4.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -85,11 +85,11 @@ CREATE TABLE `daftar_order` (
 --
 
 INSERT INTO `daftar_order` (`id`, `id_order`, `id_user`, `id_penjual`, `nama`, `tanggal`, `alamat`, `no_telp`, `total`, `kurir`, `pembayaran`, `status`, `bukti`, `resi`) VALUES
-(7, 1609835888, 2, 4, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '9025000', 'JNE', 'Merchant', 'Menunggu Pembayaran', NULL, NULL),
-(8, 1609835888, 2, 3, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '10925000', 'JNE', 'Merchant', 'Proses Pengiriman', 'banner2.jpg', '10073474236'),
-(9, 1609867120, 2, 3, 'Rifan', '06/01/2021', 'Perumahan Sejahtera', '087755565562', '6030000', 'POS', 'Credit Card', 'Menunggu Pembayaran', NULL, NULL),
-(10, 1609956806, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '5035000', 'TIKI', 'Credit Card', 'Pesanan Dibatalkan', 'banner2.jpg', NULL),
-(11, 1609966704, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '8025000', 'JNE', 'Wallet', 'Menunggu Pengiriman', 'Wallet', NULL);
+(7, 1609835888, 2, 4, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '9025000', 'JNE', 'Merchant', 'Menunggu Pembayaran', '', NULL),
+(8, 1609835888, 2, 3, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '10925000', 'JNE', 'Merchant', 'Proses Pengiriman', '', '10073474236'),
+(9, 1609867120, 2, 3, 'Rifan', '06/01/2021', 'Perumahan Sejahtera', '087755565562', '6030000', 'POS', 'Credit Card', 'Menunggu Pembayaran', '', NULL),
+(10, 1609956806, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '5035000', 'TIKI', 'Credit Card', 'Pesanan Dibatalkan', '', NULL),
+(11, 1609966704, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '8025000', 'JNE', 'Wallet', 'Menunggu Pengiriman', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -134,6 +134,24 @@ INSERT INTO `order_detail` (`id_detail`, `id_daftar`, `id_order`, `id_barang`, `
 (12, 10, 1609956806, 2, 1, '5000000'),
 (13, 11, 1609966704, 2, 1, '5000000'),
 (14, 11, 1609966704, 1, 1, '3000000');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_detailv`
+--
+
+CREATE TABLE `order_detailv` (
+  `order_detailv` int(20) NOT NULL,
+  `id_voucher` int(11) NOT NULL,
+  `id_akun` varchar(20) NOT NULL,
+  `id_pelanggan` int(11) NOT NULL,
+  `nominal` int(11) NOT NULL,
+  `harga` int(11) NOT NULL,
+  `metode_pembayaran` varchar(20) NOT NULL,
+  `tanggal` varchar(20) NOT NULL,
+  `status` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -189,7 +207,7 @@ CREATE TABLE `user` (
   `email_user` varchar(25) NOT NULL,
   `pass_user` varchar(255) NOT NULL,
   `telepon_user` varchar(25) DEFAULT NULL,
-  `alamat_user` text,
+  `alamat_user` text DEFAULT NULL,
   `foto_user` varchar(50) DEFAULT NULL,
   `wallet` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -201,7 +219,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id_user`, `nama_user`, `email_user`, `pass_user`, `telepon_user`, `alamat_user`, `foto_user`, `wallet`) VALUES
 (2, 'Rifan', 'rifan@gmail.com', '$2y$10$WrsIP90rBde.0Hgp4PHKFuxaW1OmFkQDfWJEF2ixhaeQyPaS4HvkK', '087755565562', 'Perumahan Sejahtera', '5fec88299eb10.png', '2045000'),
 (3, 'Shop G', 'shopg@gmail.com', '$2y$10$UWRQWn4/EPE9VUw9aO7b6OD12U3PeBl50rU.cN2bnmAZjeBPNT.dK', '087755565561', NULL, NULL, NULL),
-(4, 'X-Shop', 'xshop@gmail.com', '$2y$10$wyZFLQZjqbGPYssq7EQIzejRsYMsRWTY7P9L0zp9HQgJXgbHPofXS', NULL, NULL, NULL, NULL);
+(4, 'X-Shop', 'xshop@gmail.com', '$2y$10$wyZFLQZjqbGPYssq7EQIzejRsYMsRWTY7P9L0zp9HQgJXgbHPofXS', NULL, NULL, NULL, NULL),
+(5, 'haluboy', 'haluboy@gmail.com', '$2y$10$t2DNHAIXyCBI640vpl8aT./N74wAUak5XANskI57p3KZaFZ0inEky', '087863991003', 'haluland', '5ff6edec0fd33.png', '0');
 
 -- --------------------------------------------------------
 
@@ -267,6 +286,12 @@ ALTER TABLE `order_detail`
   ADD KEY `fk_id_order` (`id_order`);
 
 --
+-- Indexes for table `order_detailv`
+--
+ALTER TABLE `order_detailv`
+  ADD PRIMARY KEY (`order_detailv`);
+
+--
 -- Indexes for table `produk`
 --
 ALTER TABLE `produk`
@@ -323,16 +348,22 @@ ALTER TABLE `order_detail`
   MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
+-- AUTO_INCREMENT for table `order_detailv`
+--
+ALTER TABLE `order_detailv`
+  MODIFY `order_detailv` int(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_produk` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `voucher`

@@ -15,7 +15,7 @@
         </div>
         <div class="col-md-10">
           <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
+            <div class="carousel-inner banner">
               <div class="carousel-item active">
                 <img src="assets/img/banner1.jpg" class="d-block w-100" alt="...">
               </div>

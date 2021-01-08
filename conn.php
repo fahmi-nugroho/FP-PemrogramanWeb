@@ -81,7 +81,36 @@ if (isset($_POST['act'])) {
         $status = $_POST['status'];
 
         if ($status == "Menunggu Pengiriman") {
-            $bukti = $_POST['bukti'];
+            $id_order = $_POST['id'];
+            $id_user = $_POST['id_user'];
+            $sql = "SELECT * FROM user WHERE id_user = $id_user";
+            $result = mysqli_query(connection(), $sql);
+            $user = mysqli_fetch_array($result);
+
+            $sql = "SELECT * FROM daftar_order WHERE id = $id_order";
+            $result = mysqli_query(connection(), $sql);
+            $order = mysqli_fetch_array($result);
+
+            if ($user['wallet'] >= $order['total']) {
+              $sisa = $user['wallet'] - $order['total'];
+              $sql = "UPDATE daftar_order SET status = '$status', resi = $resi, bukti = 'wallet.png' WHERE id = $id_order";
+              if (mysqli_query(connection(), $sql)) {
+                $sql = "UPDATE user SET wallet = $sisa WHERE id = $id_user";
+                if (mysqli_query(connection(), $sql)) {
+                  echo "Pembayaran Berhasil Dilakukan";
+                }
+                else {
+                  echo "Pembayaran Gagal Dilakukan";
+                }
+              }
+              else {
+                echo "Pembayaran Gagal Dilakukan";
+              }
+            }
+            else {
+              echo "Saldo wallet tidak mencukupi, silahkan top-up terlebih dahulu.";
+            }
+
         } elseif ($status == "Proses Pengiriman") {
             $resi = $_POST['resi'];
 
