@@ -27,6 +27,9 @@ if(!isset($_SESSION['user'])){
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
+    <script type="text/javascript" src="assets/js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="assets/js/script.js"></script>
 
     <title> Toko </title>
   </head>
@@ -163,12 +166,27 @@ if(!isset($_SESSION['user'])){
                       <input type="text" id="deskripsi" name="deskripsi" class="form-control" value="">
                     </div>
                     <div class="form-group">
-                      <label for="inputGambar">Gambar</label>
+                      <label for="inputGambar<?= $_SESSION['user']['id'] ?>">Gambar</label>
                       <div class="mb-3">
                         <div class="input-group mb-3">
                           <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="inputGambar" name="gambar" aria-describedby="inputGroupFileAddon01">
-                            <label class="custom-file-label" for="inputGambar">Gambar</label>
+                            <input type="file" class="custom-file-input" id="inputGambar<?= $_SESSION['user']['id'] ?>" name="gambar" aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGambar<?= $_SESSION['user']['id'] ?>">Gambar</label>
+                            <script>
+                              $('#inputGambar<?= $_SESSION['user']['id'] ?>').on('change',function(){
+                                var upload = document.getElementById('inputGambar<?= $_SESSION['user']['id'] ?>').files;
+                                if (upload[0].size > 2000000) {
+                                  alert('File Melebihi 2MB');
+                                }
+                                else {
+                                  //get the file name
+                                  var fileName = $(this).val();
+                                  var cleanFileName = fileName.replace('C:\\fakepath\\', " ");
+                                  //replace the "Choose a file" label
+                                  $(this).next('.custom-file-label').html(cleanFileName);
+                                }
+                              })
+                            </script>
                           </div>
                         </div>
                       </div>
@@ -258,10 +276,6 @@ if(!isset($_SESSION['user'])){
       </div>
     </div>
     </div>
-
-    <script type="text/javascript" src="assets/js/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="assets/js/script.js"></script>
 
 
 <script>

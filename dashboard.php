@@ -76,7 +76,7 @@
   if (isset($_POST['id_order'])) {
     $nama_file = $_FILES['nota']['name'];
     $tmpName = $_FILES['nota']['tmp_name'];
-    
+
     $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
     $ekstensiGambar = explode('.', $nama_file);
     $ekstensiGambar = strtolower(end($ekstensiGambar));
@@ -236,12 +236,27 @@
                         <input type="text" class="form-control" name="kontak" id="nomorKontak" value="<?php echo $data['telepon_user'] ?>">
                       </div>
                       <div class="form-group">
-                        <label for="inputGambar">Gambar</label>
+                        <label for="inputGambar<?= $_SESSION['user']['id'] ?>">Gambar</label>
                         <div class="mb-3">
                           <div class="input-group mb-3">
                             <div class="custom-file">
-                              <input type="file" class="custom-file-input" id="inputGambar" name="gambar" aria-describedby="inputGroupFileAddon01">
-                              <label class="custom-file-label" for="inputGambar">Foto Profil</label>
+                              <input type="file" class="custom-file-input" id="inputGambar<?= $_SESSION['user']['id'] ?>" name="gambar" aria-describedby="inputGroupFileAddon01">
+                              <label class="custom-file-label" for="inputGambar<?= $_SESSION['user']['id'] ?>">Foto Profil</label>
+                              <script>
+                                $('#inputGambar<?= $_SESSION['user']['id'] ?>').on('change',function(){
+                                  var upload = document.getElementById('inputGambar<?= $_SESSION['user']['id'] ?>').files;
+                                  if (upload[0].size > 2000000) {
+                                    alert('File Melebihi 2MB');
+                                  }
+                                  else {
+                                    //get the file name
+                                    var fileName = $(this).val();
+                                    var cleanFileName = fileName.replace('C:\\fakepath\\', " ");
+                                    //replace the "Choose a file" label
+                                    $(this).next('.custom-file-label').html(cleanFileName);
+                                  }
+                                })
+                              </script>
                             </div>
                           </div>
                         </div>
