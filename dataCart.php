@@ -129,13 +129,12 @@ if (isset($_POST['action'])) {
 
         $toko = array_unique($toko);
         $total = $totalpt = $jmlbrg = 0;
-        for ($i = 0; $i < count($toko); $i ++) {
+        foreach ($toko as $x => $y) {
             $totalpt = 0; ?>
-
-            <h5 class="my-3"><?= mysqli_fetch_array(mysqli_query(connection(), "SELECT nama_user FROM user WHERE id_user =".$toko[$i]))[0] ?></h5> <?php
+            <h5 class="my-3"><?= mysqli_fetch_array(mysqli_query(connection(), "SELECT nama_user FROM user WHERE id_user =".$y))[0] ?></h5> <?php
 
             foreach ($cart as $key => $value):
-                if ($value[1] == $toko[$i]): ?>
+                if ($value[1] == $y): ?>
                     <div class="media mt-3">
                         <img src="assets/img/produk/<?= $value[4] ?>" class="mr-3" style="width:64px; height:64px">
                         <div class="media-body">
@@ -231,11 +230,11 @@ if (isset($_POST['action'])) {
         }
 
         $toko = array_unique($toko);
-        for ($i = 0; $i < count($toko); $i ++) {
+        foreach ($toko as $x => $y) {
             $totalpt = 0;
 
             foreach ($cart as $key => $value) {
-                if ($value['penjual'] == $toko[$i]){
+                if ($value['penjual'] == $y){
                     $totalpt += $value['harga'] * $_SESSION['cart']['cart_'.$value['id']];
                 }
             }
@@ -259,7 +258,7 @@ if (isset($_POST['action'])) {
                     $query = "INSERT INTO daftar_order VALUES (NULL,
                             $idorder,
                             ".$data['id_user'].",
-                            ".$toko[$i].",
+                            $y,
                             '".$data['nama_user']."',
                             '$tgl',
                             '".$data['alamat_user']."',
@@ -271,7 +270,7 @@ if (isset($_POST['action'])) {
                     $query = "INSERT INTO daftar_order VALUES (NULL,
                             $idorder,
                             ".$data['id_user'].",
-                            ".$toko[$i].",
+                            $y,
                             '".$data['nama_user']."',
                             '$tgl',
                             '".$data['alamat_user']."',
@@ -284,7 +283,7 @@ if (isset($_POST['action'])) {
 
                 if (mysqli_query(connection(), $query)) {
                     foreach ($cart as $key => $value) {
-                        if ($value['penjual'] == $toko[$i]){
+                        if ($value['penjual'] == $y){
                             $jml = $_SESSION['cart']['cart_'.$value['id']];
                             $stok = $value['stok'] - $jml;
 

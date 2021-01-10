@@ -271,18 +271,18 @@
               </div>
             </div>
           </div>
-          <div class="col-8">
-            <table class="table table-bordered">
+          <div class="col-5">
+            <table class="table table-bordered text-center">
               <thead>
                 <tr>
                   <th scope="col">Saldo My Shop</th>
-                  <th scope="col">Saldo My Shop Point</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><?php echo "Rp. ".number_format($data['wallet'], 2, ',', '.') ?></td>
-                  <td>0</td>
+                  <td><a href="voucher.php?jenis=5"><button type="button" class="btn btn-dark">Isi Saldo +</button></a></td>
                 </tr>
               </tbody>
             </table>
@@ -378,18 +378,14 @@
 
                               <div class="row mt-1">
                                   <?php if (!empty($data['bukti'])): ?>
-                                      <button class="btn btn-sm btn-success mx-3 col-3" type="button" data-toggle="collapse" data-target="#bukti-<?= $data['id'] ?>" aria-expanded="false" aria-controls="bukti-<?= $data['id'] ?>">
-                                          Bukti Pembayaran
-                                      </button>
+                                    <button class="btn btn-sm btn-success mx-3 col-3" type="button" data-toggle="collapse" data-target="#bukti-<?= $data['id'] ?>" aria-expanded="false" aria-controls="bukti-<?= $data['id'] ?>">
+                                        Bukti Pembayaran
+                                    </button>
                                   <?php endif; ?>
                               </div>
-                              <div class="collapse" id="bukti-<?= $data['id'] ?>">
+                              <div class="collapse bukti" id="bukti-<?= $data['id'] ?>">
                                   <div class="card card-body mt-3 border border-success">
-                                      <?php if ($data['pembayaran'] == "Wallet"): ?>
-                                          Menggunakan Saldo Wallet
-                                      <?php else: ?>
-                                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                                      <?php endif; ?>
+                                    <img class="mx-auto" src="assets/img/bukti/<?= $data['bukti'] ?>" alt="">
                                   </div>
                               </div>
                               <hr>

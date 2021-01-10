@@ -43,7 +43,7 @@
               while ($data = mysqli_fetch_array($result)):
             ?>
             <div class="card mr-2 ml-2 mb-2" style="width: 16rem;">
-              <a href="<?php echo "voucher.php?jenis=".$data['id_voucher'] ?>"><img src="assets/img/<?php echo $data['gambar'] ?>" class="card-img-top" alt="<?php echo $data['jenis_voucher'] ?>"></a>
+              <a href="<?php echo "voucher.php?jenis=".$data['id_voucher'] ?>"><img src="assets/img/voucher/<?php echo $data['gambar'] ?>" class="card-img-top" alt="<?php echo $data['jenis_voucher'] ?>"></a>
             </div>
             <?php endwhile; ?>
           </div>

@@ -13,10 +13,16 @@
       $voucher = mysqli_fetch_array($result);
     }
     elseif (isset($_POST['id_user'])) {
+      $idorder = time();
       $tgl = date("d/m/Y");
       $id_voucher = $voucher['id_voucher'];
-      $id_user = $_POST['id_user'];
-      $id_pelanggan = $_SESSION['user']['id'];
+      $id_pelanggan = $_POST['id_user'];
+      $id_user = $_SESSION['user']['id'];
+
+      $jenis = $_GET['jenis'];
+      $query = "SELECT * FROM user WHERE id_user = $id_user";
+      $result = mysqli_query(connection(),$query);
+      $user = mysqli_fetch_array($result);
 
       if ($_POST['nominal'] == 1) {
         $nominal = 50000;
@@ -59,7 +65,34 @@
         $metode = 'CC';
       }
 
-      $query = "INSERT INTO order_detailv VALUES (null, $id_voucher, $id_user, $id_pelanggan, $nominal, $harga, '$metode', '$tanggal', 'Menunggu Pembayaran')";
+      if ($metode == 'Wallet') {
+        $query = "INSERT INTO daftar_order VALUES (NULL,
+                $idorder,
+                '$id_user',
+                'My Shop',
+                '$id_pelanggan',
+                '$tgl',
+                '".$user['alamat_user']."',
+                '".$user['telepon_user']."',
+                '$harga', 'voucher', '$metode',
+                'Pesanan Selesai',
+                'wallet.png', NULL)";
+      }
+      else {
+        $query = "INSERT INTO daftar_order VALUES (NULL,
+                $idorder,
+                '$id_user',
+                'My Shop',
+                '$id_pelanggan',
+                '$tgl',
+                '".$user['alamat_user']."',
+                '".$user['telepon_user']."',
+                '$harga', 'voucher', '$metode',
+                'Menunggu Pembayaran',
+                NULL, NULL)";
+      }
+
+      // $query = "INSERT INTO order_detailv VALUES (null, $id_voucher, $id_user, $id_pelanggan, $nominal, $harga, '$metode', '$tanggal', 'Menunggu Pembayaran')";
       // $result = mysqli_query(connection(),$query);
       message('Pembelian akan diproses, mohon cek akun My Shop Anda');
       redirect('dashboard.php');
@@ -68,18 +101,26 @@
       message('Ada Kesalahan, Mohon Coba Lagi');
       redirect('index.php');
     }
+
+    $query = "SELECT email_user FROM user WHERE id_user = ".$_SESSION['user']['id'];
+    $result = mysqli_query(connection(),$query);
+    $email = mysqli_fetch_array($result);
 ?>
 
 <div class="container mt-5">
   <div class="row justify-content-center mx-auto">
     <div class="card mr-2 ml-2 mb-2" style="width: 16rem;">
-      <img src="assets/img/<?php echo $voucher['gambar'] ?>" class="card-img-top" alt="<?php echo $data['jenis_voucher'] ?>">
+      <img src="assets/img/voucher/<?php echo $voucher['gambar'] ?>" class="card-img-top" alt="<?php echo $data['jenis_voucher'] ?>">
     </div>
   </div>
   <form method="post" action="voucher.php">
     <div class="form-group mb-3">
       <label for="id_voucher" class="form-label">Masukkan ID <?php echo $voucher['jenis_voucher'] ?> Anda</label>
-      <input type="text" class="form-control" name="id_user" id="id_voucher" required>
+      <?php if ($_GET['jenis'] == 5): ?>
+        <input type="text" class="form-control" name="id_user" id="id_voucher" value="<?php echo $email['email_user'] ?>" required>
+      <?php else: ?>
+        <input type="text" class="form-control" name="id_user" id="id_voucher" required>
+      <?php endif; ?>
     </div>
     <div class="form-group mb-3">
       <label for="nominal" class="form-label">Nominal Top-Up</label>
