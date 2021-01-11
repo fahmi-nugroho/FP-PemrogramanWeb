@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="assets/css/style.css">
-        <link rel="stylesheet" href="assets/css/all.min.css">
-    
-        <title>Hello, world!</title>
-    </head>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/all.min.css">
+
+    <title>Hello, world!</title>
+</head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <h3><i class="fas fa-shopping-cart mr-2"></i></h3>
@@ -32,14 +33,18 @@
             <button class="btn btn-dark" type="button">Daftar</button>
         </div>
     </nav>
-<form action="replace_banner.php" method="post" enctype="multipart/form-data">
-  Select image to upload:
-  <input type="file" name="fileToUpload" id="fileToUpload">
-  <input type="submit" value="Upload Image" name="submit">
-</form>
+
+    <form action="insertvoucher_admin.php" method="post" enctype="multipart/form-data">
+        <td>id voucher</td>
+        <input type="text" name="id_voucher" id="id_voucher">
+        <td>jenis voucher</td>
+        <input type="text" name="jenis_voucher" id="jenis_voucher">
+        Select image to upload:
+        <input type="file" name="fileToUpload" id="fileToUpload">
+
+        <input type="submit" value="Tambahkan" name="submit">
+    </form>
+    </form>
 </body>
 
 </html>
-
-
-

@@ -38,9 +38,9 @@ require 'conn.php';
             <button class="btn btn-dark" type="button">Daftar</button>
         </div>
     </nav>
-
+    <button type="button" onclick="location.href='replace_banner_form.html'" class=" btn btn-dark">Ganti Banner</button>
     <table class="table">
-        <h3>Voucher</h3>
+        <h3>Produk</h3>
         <thead class="thead-dark">
             <tr>
                 <th scope="col">Id Produk</th>
@@ -76,7 +76,7 @@ require 'conn.php';
                 <td>
                     <a
                         href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_produk']?>">Update</a>
-                    <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_produk']?>"
+                    <a href="http://localhost/benaya/FP-PemrogramanWeb-master/FP-PemrogramanWeb-master/deleteproduk_admin.php?id=<?php echo $data['id_produk']?>"
                         onclick="return confirm('Hapus Data <?php echo $data['id_produk']?>')" ;>Delete</a>
                 </td>
             </tr>
@@ -89,6 +89,9 @@ require 'conn.php';
     <table class="table">
         <br></br>
         <h3>Voucher</h3>
+        <button type="button" onclick="location.href='insertvoucher.html'" class=" btn btn-dark">Tambah
+            Voucher</button>
+        <br></br>
         <thead class="thead-dark">
             <tr>
                 <th scope="col">id Voucher</th>
@@ -99,6 +102,7 @@ require 'conn.php';
         </thead>
         <tbody>
             <tr>
+
                 <?php
             $view = "SELECT * FROM voucher";
             $res = mysqli_query(connection(),$view);
@@ -113,7 +117,7 @@ require 'conn.php';
                 <td>
                     <a
                         href="http://localhost/benaya/barokah/updateproduk.php?id=<?php echo $data['id_voucher']?>">Update</a>
-                    <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_voucher']?>"
+                    <a href="http://localhost/benaya/FP-PemrogramanWeb-master/FP-PemrogramanWeb-master/deletevoucher_admin.php?id=<?php echo $data['id_voucher']?>"
                         onclick="return confirm('Hapus Data <?php echo $data['id_voucher']?>')" ;>Delete</a>
                 </td>
             </tr>
@@ -121,7 +125,9 @@ require 'conn.php';
             </tr>
             </tr>
 
+
         </tbody>
+
     </table>
 
 
