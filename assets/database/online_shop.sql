@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2021 at 07:18 AM
+-- Generation Time: Jan 11, 2021 at 06:36 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.7
 
@@ -77,7 +77,7 @@ CREATE TABLE `daftar_order` (
   `pembayaran` varchar(50) NOT NULL,
   `status` varchar(50) NOT NULL,
   `bukti` varchar(100) DEFAULT NULL,
-  `resi` varchar(100) DEFAULT NULL
+  `resi` int(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -85,11 +85,47 @@ CREATE TABLE `daftar_order` (
 --
 
 INSERT INTO `daftar_order` (`id`, `id_order`, `id_user`, `id_penjual`, `nama`, `tanggal`, `alamat`, `no_telp`, `total`, `kurir`, `pembayaran`, `status`, `bukti`, `resi`) VALUES
-(7, 1609835888, 2, 4, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '9025000', 'JNE', 'Merchant', 'Menunggu Pembayaran', '', NULL),
-(8, 1609835888, 2, 3, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '10925000', 'JNE', 'Merchant', 'Proses Pengiriman', '', '10073474236'),
+(7, 1609835888, 2, 4, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '9025000', 'JNE', 'Merchant', 'Menunggu Pengiriman', '5ff8e28b18a1b.jpg', NULL),
+(8, 1609835888, 2, 3, 'Rifan', '05/01/2021', 'Perumahan Sejahtera', '087755565562', '10925000', 'JNE', 'Merchant', 'Pesanan Selesai', 'gagak akatsuki.png', 2147483647),
 (9, 1609867120, 2, 3, 'Rifan', '06/01/2021', 'Perumahan Sejahtera', '087755565562', '6030000', 'POS', 'Credit Card', 'Menunggu Pembayaran', '', NULL),
 (10, 1609956806, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '5035000', 'TIKI', 'Credit Card', 'Pesanan Dibatalkan', '', NULL),
-(11, 1609966704, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '8025000', 'JNE', 'Wallet', 'Menunggu Pengiriman', '', NULL);
+(11, 1609966704, 2, 3, 'Rifan', '07/01/2021', 'Perumahan Sejahtera', '087755565562', '8025000', 'JNE', 'Wallet', 'Pesanan Dibatalkan', 'wallet.png', NULL),
+(12, 1610197334, 2, 4, 'Rifan', '09/01/2021', 'Perumahan Sejahtera', '087755565562', '9525000', 'JNE', 'Merchant', 'Menunggu Pembayaran', NULL, NULL),
+(13, 1610197334, 2, 3, 'Rifan', '09/01/2021', 'Perumahan Sejahtera', '087755565562', '925000', 'JNE', 'Merchant', 'Menunggu Pembayaran', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `daftar_orderv`
+--
+
+CREATE TABLE `daftar_orderv` (
+  `id` int(11) NOT NULL,
+  `id_order` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_voucher` varchar(50) NOT NULL,
+  `jenis_voucher` int(11) NOT NULL,
+  `nama` varchar(200) NOT NULL,
+  `tanggal` varchar(50) NOT NULL,
+  `alamat` text NOT NULL,
+  `no_telp` varchar(15) NOT NULL,
+  `nominal` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
+  `pembayaran` varchar(50) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `bukti` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `daftar_orderv`
+--
+
+INSERT INTO `daftar_orderv` (`id`, `id_order`, `id_user`, `id_voucher`, `jenis_voucher`, `nama`, `tanggal`, `alamat`, `no_telp`, `nominal`, `total`, `pembayaran`, `status`, `bukti`) VALUES
+(1, 1610277768, 2, 'haluboy', 1, 'Rifan', '10/01/2021', 'Perumahan Sejahtera', '087755565562', 50000, 52500, 'Wallet', 'Pesanan Selesai', 'wallet.png'),
+(2, 1610300422, 2, 'haluboy', 2, 'Rifan', '11/01/2021', 'Perumahan Sejahtera', '087755565562', 100000, 105000, 'Merchant (Indomart / Alfamart)', 'Pesanan Selesai', '5ffb4d39cebd8.png'),
+(3, 1610335533, 6, 'haluboy@gmail.com', 5, 'haluboy', '11/01/2021', 'haluland', '0891234567810', 100000, 105000, 'Merchant (Indomart / Alfamart)', 'Pesanan Dibatalkan', NULL),
+(4, 1610336568, 6, 'haluboy@gmail.com', 5, 'haluboy', '11/01/2021', 'haluland', '0891234567810', 500000, 525000, 'Merchant (Indomart / Alfamart)', 'Pesanan Selesai', '5ffbc9409d60a.png'),
+(5, 1610336706, 6, 'haluboy@gmail.com', 5, 'haluboy', '11/01/2021', 'haluland', '0891234567810', 100000, 105000, 'Merchant (Indomart / Alfamart)', 'Pesanan Selesai', '5ffbce681facf.jpg');
 
 -- --------------------------------------------------------
 
@@ -133,25 +169,10 @@ INSERT INTO `order_detail` (`id_detail`, `id_daftar`, `id_order`, `id_barang`, `
 (11, 9, 1609835888, 1, 2, '3000000'),
 (12, 10, 1609956806, 2, 1, '5000000'),
 (13, 11, 1609966704, 2, 1, '5000000'),
-(14, 11, 1609966704, 1, 1, '3000000');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_detailv`
---
-
-CREATE TABLE `order_detailv` (
-  `order_detailv` int(20) NOT NULL,
-  `id_voucher` int(11) NOT NULL,
-  `id_akun` varchar(20) NOT NULL,
-  `id_pelanggan` int(11) NOT NULL,
-  `nominal` int(11) NOT NULL,
-  `harga` int(11) NOT NULL,
-  `metode_pembayaran` varchar(20) NOT NULL,
-  `tanggal` varchar(20) NOT NULL,
-  `status` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+(14, 11, 1609966704, 1, 1, '3000000'),
+(15, 12, 1610197334, 5, 2, '4500000'),
+(16, 12, 1610197334, 4, 1, '500000'),
+(17, 13, 1610197334, 3, 1, '900000');
 
 -- --------------------------------------------------------
 
@@ -167,7 +188,6 @@ CREATE TABLE `produk` (
   `deskripsi` text NOT NULL,
   `harga` double NOT NULL,
   `stok` int(3) NOT NULL,
-  `stars` int(10) NOT NULL,
   `gambar` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -175,12 +195,33 @@ CREATE TABLE `produk` (
 -- Dumping data for table `produk`
 --
 
-INSERT INTO `produk` (`id_produk`, `id_kategori`, `penjual`, `nama_produk`, `deskripsi`, `harga`, `stok`, `stars`, `gambar`) VALUES
-(1, 2, 3, 'Playstation 4', 'Playstation 4', 3000000, 19, 7, 'produk1.png'),
-(2, 2, 3, 'Nintendo Switch', 'Nintendo Switch', 5000000, 10, 6, 'produk2.png'),
-(3, 3, 3, 'Controller Nintendo Switch', 'Controller Nintendo Switch', 900000, 15, 9, 'produk3.png'),
-(4, 1, 4, 'Zelda BOTW Nintendo Switch', 'Zelda BOTW Nintendo Switch', 500000, 10, 8, 'produk4.png'),
-(5, 1, 4, 'Zelda Breath of the Wild Nintendo Switch (Baru)', 'Zelda BOTW Nintendo Switch', 4500000, 3, 10, 'produk4.png');
+INSERT INTO `produk` (`id_produk`, `id_kategori`, `penjual`, `nama_produk`, `deskripsi`, `harga`, `stok`, `gambar`) VALUES
+(1, 2, 3, 'Playstation 4', 'Playstation 4', 3000000, 20, 'produk1.png'),
+(2, 2, 3, 'Nintendo Switch', 'Nintendo Switch', 5000000, 13, 'produk2.png'),
+(3, 3, 3, 'Controller Nintendo Switch', 'Controller Nintendo Switch', 900000, 15, 'produk3.png'),
+(4, 1, 4, 'Zelda BOTW Nintendo Switch', 'Zelda BOTW Nintendo Switch', 500000, 9, 'produk4.png'),
+(5, 1, 4, 'Zelda Breath of the Wild Nintendo Switch (Baru)', 'Zelda BOTW Nintendo Switch', 4500000, 1, 'produk4.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rating`
+--
+
+CREATE TABLE `rating` (
+  `id_rating` int(11) NOT NULL,
+  `id_order` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `id_barang` int(11) NOT NULL,
+  `rating` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `rating`
+--
+
+INSERT INTO `rating` (`id_rating`, `id_order`, `id_user`, `id_barang`, `rating`) VALUES
+(1, 1609835888, 2, 3, 9);
 
 -- --------------------------------------------------------
 
@@ -217,10 +258,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `nama_user`, `email_user`, `pass_user`, `telepon_user`, `alamat_user`, `foto_user`, `wallet`) VALUES
-(2, 'Rifan', 'rifan@gmail.com', '$2y$10$WrsIP90rBde.0Hgp4PHKFuxaW1OmFkQDfWJEF2ixhaeQyPaS4HvkK', '087755565562', 'Perumahan Sejahtera', '5fec88299eb10.png', '2045000'),
+(2, 'Rifan', 'rifan@gmail.com', '$2y$10$WrsIP90rBde.0Hgp4PHKFuxaW1OmFkQDfWJEF2ixhaeQyPaS4HvkK', '087755565562', 'Perumahan Sejahtera', '5ff8151a950c1.jpg', '20995000'),
 (3, 'Shop G', 'shopg@gmail.com', '$2y$10$UWRQWn4/EPE9VUw9aO7b6OD12U3PeBl50rU.cN2bnmAZjeBPNT.dK', '087755565561', NULL, NULL, NULL),
 (4, 'X-Shop', 'xshop@gmail.com', '$2y$10$wyZFLQZjqbGPYssq7EQIzejRsYMsRWTY7P9L0zp9HQgJXgbHPofXS', NULL, NULL, NULL, NULL),
-(5, 'haluboy', 'haluboy@gmail.com', '$2y$10$t2DNHAIXyCBI640vpl8aT./N74wAUak5XANskI57p3KZaFZ0inEky', '087863991003', 'haluland', '5ff6edec0fd33.png', '0');
+(6, 'haluboy', 'haluboy@gmail.com', '$2y$10$nJhjjxl2w.iwMZqU9eZ5XOqkNLA/FOK6OfKNRuxcq.rNZwBPvsTSG', '0891234567810', 'haluland', '5ffbc52015ba7.png', '100000');
 
 -- --------------------------------------------------------
 
@@ -242,7 +283,8 @@ INSERT INTO `voucher` (`id_voucher`, `jenis_voucher`, `gambar`) VALUES
 (1, 'Playstation Plus', 'playstation1.png'),
 (2, 'Xbox Live', 'xbox1.png'),
 (3, 'Google Play', 'googleplay1.png'),
-(4, 'Steam', 'steam1.png');
+(4, 'Steam', 'steam1.png'),
+(5, 'My Shop', 'wallet.png');
 
 --
 -- Indexes for dumped tables
@@ -271,6 +313,14 @@ ALTER TABLE `daftar_order`
   ADD KEY `id_order` (`id_order`);
 
 --
+-- Indexes for table `daftar_orderv`
+--
+ALTER TABLE `daftar_orderv`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_order` (`id_order`),
+  ADD KEY `id_user` (`id_user`);
+
+--
 -- Indexes for table `news`
 --
 ALTER TABLE `news`
@@ -286,18 +336,18 @@ ALTER TABLE `order_detail`
   ADD KEY `fk_id_order` (`id_order`);
 
 --
--- Indexes for table `order_detailv`
---
-ALTER TABLE `order_detailv`
-  ADD PRIMARY KEY (`order_detailv`);
-
---
 -- Indexes for table `produk`
 --
 ALTER TABLE `produk`
   ADD PRIMARY KEY (`id_produk`),
   ADD KEY `id_kategori` (`id_kategori`),
   ADD KEY `penjual` (`penjual`);
+
+--
+-- Indexes for table `rating`
+--
+ALTER TABLE `rating`
+  ADD PRIMARY KEY (`id_rating`);
 
 --
 -- Indexes for table `user`
@@ -333,7 +383,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `daftar_order`
 --
 ALTER TABLE `daftar_order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `daftar_orderv`
+--
+ALTER TABLE `daftar_orderv`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `news`
@@ -345,31 +401,31 @@ ALTER TABLE `news`
 -- AUTO_INCREMENT for table `order_detail`
 --
 ALTER TABLE `order_detail`
-  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
---
--- AUTO_INCREMENT for table `order_detailv`
---
-ALTER TABLE `order_detailv`
-  MODIFY `order_detailv` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id_produk` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_produk` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `rating`
+--
+ALTER TABLE `rating`
+  MODIFY `id_rating` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `voucher`
 --
 ALTER TABLE `voucher`
-  MODIFY `id_voucher` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_voucher` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
