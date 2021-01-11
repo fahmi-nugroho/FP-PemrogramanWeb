@@ -15,6 +15,55 @@ if(!isset($_SESSION['user'])){
     //     redirect("dashboard.php");
     // }
 }
+
+if (isset($_POST['id_order'])) {
+  $nama_file = $_FILES['nota']['name'];
+  $tmpName = $_FILES['nota']['tmp_name'];
+
+  $ekstensiGambarValid = ['jpg', 'jpeg', 'png'];
+  $ekstensiGambar = explode('.', $nama_file);
+  $ekstensiGambar = strtolower(end($ekstensiGambar));
+
+  if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
+    message('Yang Anda Upload Bukan Gambar!');
+    redirect('dashboard.php');
+  }
+  else {
+    $namaFileBaru = uniqid() . '.' . $ekstensiGambar;
+    $tujuan = 'assets/img/bukti/'.$namaFileBaru;
+    $gambar = $namaFileBaru;
+
+    move_uploaded_file($tmpName, $tujuan);
+    // message($_POST['id_order']);
+    // message("hello");
+    $query = "UPDATE daftar_orderv SET status = 'Pesanan Selesai', bukti = '$gambar' WHERE id = ".$_POST['id_order'];
+    $result = mysqli_query(connection(), $query);
+  }
+  if ($result) {
+    $queryDaftar = "SELECT * FROM daftar_orderv WHERE id = ".$_POST['id_order'];
+    $resultDaftar = mysqli_query(connection(), $queryDaftar);
+    $data = mysqli_fetch_array($resultDaftar);
+
+    if ($data['jenis_voucher'] == 5) {
+      $queryUser = "SELECT * FROM user WHERE email_user = '".$data['id_voucher']."'";
+      $resultUser = mysqli_query(connection(), $queryUser);
+      $user = mysqli_fetch_array($resultUser);
+      // message($user['email_user']);
+      $wallet = $user['wallet'] + $data['nominal'];
+      $queryUser = "UPDATE user SET wallet = $wallet WHERE id_user = ". $user['id_user'];
+      $resultUser = mysqli_query(connection(), $queryUser);
+      if(!$resultUser){
+        message('Ada Kesalahan, Mohon Coba Lagi');
+        redirect('index.php');
+      }
+    }
+    message('Pembayaran Berhasil Dilakukan');
+  }
+  else {
+    message('Pembayaran Gagal Dilakukan');
+  }
+  redirect('dvoucher.php');
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -27,6 +76,8 @@ if(!isset($_SESSION['user'])){
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
+    <script type="text/javascript" src="assets/js/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
 
     <title> Penjualan </title>
   </head>
@@ -67,11 +118,8 @@ if(!isset($_SESSION['user'])){
         </ul>
       </div>
       <div class="col-md-10 p-5 pt-2">
-        <h3><i class="fas fa-list-alt"></i> Daftar Penjualan</h3>
+        <h3><i class="fas fa-list-alt"></i> History Voucher</h3>
         <hr>
-        <div class="row mt-2 mb-2">
-          <h4 class="mr-auto ml-auto"><i class="fas fa-file-invoice"></i> Daftar Order</h4>
-        </div>
         <div class="row">
             <table class="table">
             <thead>
@@ -93,7 +141,7 @@ if(!isset($_SESSION['user'])){
                     // $query = "SELECT * FROM daftar_order WHERE id_order='$search'";
                     // $result = mysqli_query(connection(),$query);
                 } else {
-                    $query = "SELECT * FROM daftar_order WHERE id_penjual = ".$_SESSION['user']['id']." ORDER BY id_order DESC";
+                    $query = "SELECT * FROM daftar_orderv WHERE id_user = ".$_SESSION['user']['id']." ORDER BY id_order DESC";
                     $result = mysqli_query(connection(), $query);
                 }
 
@@ -125,15 +173,8 @@ if(!isset($_SESSION['user'])){
                                 Detail
                             </button>
                             <?php if ($data['status'] == "Menunggu Pembayaran"): ?>
-                                <button id="kirim" type="button" class="btn btn-sm btn-warning" name="button" disabled style="cursor: not-allowed">
-                                    Kirim
-                                </button>
-                                <button id="cancel" type="button" class="btn btn-sm btn-danger" name="button" data-toggle="modal" data-target="#cancelBarang-<?= $data['id']?>">
-                                    Cancel
-                                </button>
-                            <?php elseif ($data['status'] == "Menunggu Pengiriman"): ?>
-                                <button id="kirim" type="button" class="btn btn-sm btn-warning" name="button" data-toggle="modal" data-target="#kirimBarang-<?= $data['id'] ?>">
-                                    Kirim
+                                <button id="bayar" type="button" class="btn btn-sm btn-warning" name="button" data-toggle="modal" data-target="#bayarBarang-<?= $data['id'] ?>">
+                                    Bayar
                                 </button>
                                 <button id="cancel" type="button" class="btn btn-sm btn-danger" name="button" data-toggle="modal" data-target="#cancelBarang-<?= $data['id']?>">
                                     Cancel
@@ -159,8 +200,8 @@ if(!isset($_SESSION['user'])){
                                     <dt class="col-sm-3">Status</dt>
                                     <dd class="col-sm-9"><?= $data['status']?></dd>
 
-                                    <dt class="col-sm-3">Toko</dt>
-                                    <dd class="col-sm-9"><?= mysqli_fetch_array(mysqli_query(connection(), "SELECT nama_user FROM user WHERE id_user = ".$data['id_penjual']))[0] ?></dd>
+                                    <dt class="col-sm-3">Jenis Voucher</dt>
+                                    <dd class="col-sm-9"><?= mysqli_fetch_array(mysqli_query(connection(), "SELECT jenis_voucher FROM voucher WHERE id_voucher = ".$data['jenis_voucher']))[0] ?></dd>
 
                                     <dt class="col-sm-3">Tanggal Pembelian</dt>
                                     <dd class="col-sm-9"><?= date("j M Y\, H:i", $data['id_order']) ?></dd>
@@ -179,61 +220,13 @@ if(!isset($_SESSION['user'])){
                                     </div>
                                 </div>
                                 <hr>
-                                <h5 class="pb-2">Daftar Produk</h5>
-                                <?php
-                                $query2 = "SELECT * FROM order_detail WHERE id_daftar = ".$data['id'];
-                                $result2 = mysqli_query(connection(), $query2);
-                                $total = $totalb = 0;
-
-                                while ($detail = mysqli_fetch_array($result2)){
-                                    $sql = "SELECT * FROM produk WHERE id_produk = ".$detail['id_barang'];
-                                    $que = mysqli_query(connection(), $sql);
-                                    $produk = mysqli_fetch_array($que); ?>
-
-                                    <div class="media mt-3">
-                                        <img src="assets/img/produk/<?= $produk['gambar'] ?>" class="mr-3" style="width:64px; height:64px">
-                                        <div class="media-body">
-                                            <h6 class="mt-0"><?= $produk['nama_produk'] ?></h6>
-                                            <div class="text-danger">Rp <?= number_format($produk['harga'], 2, ',', '.') ?></div>
-                                            <div class="text-muted my-1"><?= $detail['jumlah'] ?> barang</div>
-                                        </div>
-                                    </div>
-                                    <?php $total += $produk['harga'] * $detail['jumlah'];
-                                    $totalb += $detail['jumlah'];
-                                } ?>
-                                <hr>
-                                <h5 class="pb-2">Pengiriman</h5>
-                                <dl class="row">
-                                    <?php if (!empty($data['resi'])): ?>
-                                        <dt class="col-sm-2">No Resi</dt>
-                                        <dd class="col-sm-10"><?= $data['resi'] ?></dd>
-                                    <?php endif; ?>
-
-                                    <dt class="col-sm-2">Kurir</dt>
-                                    <dd class="col-sm-10"><?= $data['kurir'] ?></dd>
-
-                                    <dt class="col-sm-2">Penerima</dt>
-                                    <dd class="col-sm-10"><?= $data['nama'] ?></dd>
-
-                                    <dt class="col-sm-2">Alamat</dt>
-                                    <dd class="col-sm-10"><?= $data['alamat'] ?></dd>
-
-                                    <dt class="col-sm-2">No Telepon</dt>
-                                    <dd class="col-sm-10"><?= $data['no_telp'] ?></dd>
-                                </dl>
-                                <hr>
                                 <h5 class="pb-2">Pembayaran</h5>
                                 <dl class="row">
-                                    <dt class="col-sm-3">Jumlah Barang</dt>
-                                    <dd class="col-sm-9"><?= $totalb ?> Barang</dd>
+
+                                    <dt class="col-sm-3">Jumlah Saldo</dt>
+                                    <dd class="col-sm-9">Rp <?= number_format($data['nominal'], 2, ',', '.') ?></dd>
 
                                     <dt class="col-sm-3">Total Harga</dt>
-                                    <dd class="col-sm-9">Rp <?= number_format($total, 2, ',', '.') ?></dd>
-
-                                    <dt class="col-sm-3">Ongkir</dt>
-                                    <dd class="col-sm-9">Rp <?= number_format($data['total'] - $total, 2, ',', '.') ?></dd>
-
-                                    <dt class="col-sm-3">Total</dt>
                                     <dd class="col-sm-9">Rp <?= number_format($data['total'], 2, ',', '.') ?></dd>
 
                                     <dt class="col-sm-3">Metode Pembayaran</dt>
@@ -241,36 +234,6 @@ if(!isset($_SESSION['user'])){
                                 </dl>
                             </div>
                           </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="kirimBarang-<?= $data['id'] ?>" tabindex="-1" aria-labelledby="kirimBarangLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="kirimBarangLabel">Pengiriman Barang</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="alert alert-info" role="alert">
-                                        <p><b>Pastikan cek bukti pembayaran</b> sebelum mengirim barang!</p>
-                                        <hr>
-                                        <p class="mb-0">Bukti pembayaran terdapat <b>di bagian detail order.</b></p>
-                                    </div>
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="resi">Nomor Resi</label>
-                                            <input type="text" class="form-control" id="inputResi-<?= $data['id'] ?>" pattern="^[0-9]*$" aria-describedby="inputResi-<?= $data['id'] ?>">
-                                            <div class="invalid-feedback" id="inputResi-<?= $data['id'] ?>">
-                                                Mohon masukkan resi dengan benar
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn btn-warning" onclick="addResi(<?= $data['id'] ?>)">Kirim</button>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -288,12 +251,62 @@ if(!isset($_SESSION['user'])){
                                     <p class="mb-0">Pembatalan pesanan <b class="text-danger">#<?= $data['id_order'] ?></b> tidak bisa diurungkan.</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" onclick="cancel(<?= $data['id'] ?>)">Ya</button>
+                                    <button type="button" class="btn btn-danger" onclick="cancel(<?= $data['id'] ?>,'voucher')">Ya</button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade" id="bayarBarang-<?= $data['id'] ?>" tabindex="-1" aria-labelledby="bayarBarangLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="bayarBarangLabel">Pengiriman Barang</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="alert alert-info" role="alert">
+                              <p>Pastikan bukti pembayaran <b>sudah benar</b></p>
+                            </div>
+                            <form method="post" action="dvoucher.php" enctype="multipart/form-data">
+                              <div class="form-group">
+                                <label for="inputNota">Bukti Pembayaran</label>
+                                <input type="hidden" class="form-control" name="id_order" value="<?php echo $data['id'] ?>">
+                                <div class="mb-3">
+                                  <div class="input-group mb-3">
+                                    <div class="custom-file">
+                                      <input type="file" class="custom-file-input" accept="image/jpeg,image/x-png" id="inputNota<?= $data['id'] ?>" name="nota" aria-describedby="inputGroupFileAddon01" required>
+                                      <label class="custom-file-label" for="inputNota">Nota</label>
+                                      <script>
+                                        $('#inputNota<?= $data['id'] ?>').on('change',function(){
+                                          var upload = document.getElementById('inputNota<?= $data['id'] ?>').files;
+                                          console.log(upload[0]);
+                                          if (upload[0].size > 2000000) {
+                                            alert('File Melebihi 2MB');
+                                          }
+                                          else {
+                                            //get the file name
+                                            var fileName = $(this).val();
+                                            var cleanFileName = fileName.replace('C:\\fakepath\\', " ");
+                                            //replace the "Choose a file" label
+                                            $(this).next('.custom-file-label').html(cleanFileName);
+                                          }
+                                        })
+                                      </script>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <button type="submit" class="btn btn-warning">Bayar</button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                 <?php endwhile; ?>
             </tbody>
         </table>
@@ -301,37 +314,12 @@ if(!isset($_SESSION['user'])){
     </div>
     </div>
 
-    <script type="text/javascript" src="assets/js/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript">
-        function addResi(id) {
-            var pattern = /^[0-9]*$/;
-            var resi = $("#inputResi-"+id);
-
-            if (pattern.test(resi.val()) && resi.val() != "") {
-                resi.addClass("is-valid").removeClass("is-invalid");
-            } else {
-                resi.addClass("is-invalid").removeClass("is-valid");
-            }
-
-            if (resi.hasClass("is-valid")) {
-                $.ajax({
-                    type: "POST",
-                    url: "conn.php",
-                    data: "act=updOrder&status=Proses Pengiriman&resi=" + resi.val() + "&id=" + id,
-                    success: function(data){
-                        alert(data);
-                        window.location = window.location.href;
-                    }
-                })
-            }
-        }
-
-        function cancel(id) {
+        function cancel(id,jenis) {
             $.ajax({
                 type: "POST",
                 url: "conn.php",
-                data: "act=updOrder&status=Pesanan Dibatalkan&id=" + id,
+                data: "act=updOrder&status=Pesanan Dibatalkan&id=" + id + "&jenis=" + jenis,
                 success: function(data){
                     alert(data);
                     window.location = window.location.href;

@@ -59,6 +59,9 @@ if(!isset($_SESSION['user'])){
             <a class="nav-link active text-dark" href="dashboard.php"><i class="fas fa-user mr-2"></i> Profil</a><hr>
           </li>
           <li class="nav-item">
+            <a class="nav-link active text-dark" href="dvoucher.php"><i class="fas fa-ticket-alt"></i> Voucher</a><hr>
+          </li>
+          <li class="nav-item">
             <a class="nav-link text-dark" href="toko.php"><i class="fas fa-store mr-2"></i> Toko</a><hr>
           </li>
           <li class="nav-item">

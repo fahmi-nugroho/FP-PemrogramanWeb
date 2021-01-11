@@ -154,6 +154,9 @@
             <a class="nav-link active text-dark" href="dashboard.php"><i class="fas fa-user mr-2"></i> Profil</a><hr>
           </li>
           <li class="nav-item">
+            <a class="nav-link active text-dark" href="dvoucher.php"><i class="fas fa-ticket-alt"></i> Voucher</a><hr>
+          </li>
+          <li class="nav-item">
             <a class="nav-link text-dark" href="toko.php"><i class="fas fa-store mr-2"></i> Toko</a><hr>
           </li>
           <li class="nav-item">
@@ -465,7 +468,7 @@
                         </div>
                         <div class="modal-body">
                           <div class="alert alert-info" role="alert">
-                            <p>Pastikan bukti pembayaran <b>sudah benar</b> sebelum mengirim barang!</p>
+                            <p>Pastikan bukti pembayaran <b>sudah benar</b></p>
                           </div>
                           <form method="post" action="dashboard.php" enctype="multipart/form-data">
                             <div class="form-group">
@@ -555,17 +558,5 @@
               window.location = window.location.href;
           }
       })
-  }
-
-  function bayar(id, id_user) {
-    $.ajax({
-        type: "POST",
-        url: "conn.php",
-        data: "act=updOrder&status=Menunggu Pengiriman&id=" + id + "&id_user=" + id_user,
-        success: function(data){
-            alert(data);
-            window.location = window.location.href;
-        }
-    })
   }
 </script>
