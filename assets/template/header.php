@@ -28,8 +28,8 @@
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline ml-auto my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form action="index.php" method="post" class="form-inline ml-auto my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" name="cari" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
         </form>
         <h5><a data-toggle="modal" data-target="#cart" style="cursor: pointer;"><i class="fas fa-shopping-cart mt-2 mr-4 ml-3 text-dark" data-toggle="tooltip" title="Keranjang Belanja"></i></a></h5>

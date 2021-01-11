@@ -73,6 +73,20 @@
     // message($nama.$nomor.$gambar);
   }
 
+  if (isset($_POST['rating'])) {
+    $rating = $_POST['rating'];
+
+    $sql = "INSERT INTO rating VALUES (null, ".$_POST['id_order'].", ".$_POST['id_user'].", ".$_POST['id_barang'].", $rating)";
+    $result = mysqli_query(connection(), $sql);
+    if ($result) {
+      message("Pemberian Rating Berhasil");
+    }
+    else {
+      message("Pemberian Rating Gagal");
+    }
+    redirect('dashboard.php');
+  }
+
   if (isset($_POST['id_order'])) {
     $nama_file = $_FILES['nota']['name'];
     $tmpName = $_FILES['nota']['tmp_name'];
@@ -152,6 +166,9 @@
         <ul class="nav flex-column ml-3 mb-3">
           <li class="nav-item">
             <a class="nav-link active text-dark" href="dashboard.php"><i class="fas fa-user mr-2"></i> Profil</a><hr>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active text-dark" href="dvoucher.php"><i class="fas fa-ticket-alt"></i> Voucher</a><hr>
           </li>
           <li class="nav-item">
             <a class="nav-link text-dark" href="toko.php"><i class="fas fa-store mr-2"></i> Toko</a><hr>
@@ -271,18 +288,18 @@
               </div>
             </div>
           </div>
-          <div class="col-8">
-            <table class="table table-bordered">
+          <div class="col-5">
+            <table class="table table-bordered text-center">
               <thead>
                 <tr>
                   <th scope="col">Saldo My Shop</th>
-                  <th scope="col">Saldo My Shop Point</th>
+                  <th scope="col">Action</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><?php echo "Rp. ".number_format($data['wallet'], 2, ',', '.') ?></td>
-                  <td>0</td>
+                  <td><a href="voucher.php?jenis=5"><button type="button" class="btn btn-dark">Isi Saldo +</button></a></td>
                 </tr>
               </tbody>
             </table>
@@ -348,6 +365,10 @@
                                 <button id="cancel" type="button" class="btn btn-sm btn-danger" name="button" data-toggle="modal" data-target="#cancelBarang-<?= $data['id']?>">
                                     Cancel
                                 </button>
+                            <?php elseif ($data['status'] == "Proses Pengiriman"): ?>
+                              <button id="selesai" type="button" class="btn btn-sm btn-success" name="button" data-toggle="modal" data-target="#selesaiBarang-<?= $data['id']?>">
+                                  Selesai
+                              </button>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -378,18 +399,16 @@
 
                               <div class="row mt-1">
                                   <?php if (!empty($data['bukti'])): ?>
-                                      <button class="btn btn-sm btn-success mx-3 col-3" type="button" data-toggle="collapse" data-target="#bukti-<?= $data['id'] ?>" aria-expanded="false" aria-controls="bukti-<?= $data['id'] ?>">
-                                          Bukti Pembayaran
-                                      </button>
+                                    <button class="btn btn-sm btn-success mx-3 col-3" type="button" data-toggle="collapse" data-target="#bukti-<?= $data['id'] ?>" aria-expanded="false" aria-controls="bukti-<?= $data['id'] ?>">
+                                        Bukti Pembayaran
+                                    </button>
                                   <?php endif; ?>
                               </div>
-                              <div class="collapse" id="bukti-<?= $data['id'] ?>">
+                              <div class="collapse bukti" id="bukti-<?= $data['id'] ?>">
                                   <div class="card card-body mt-3 border border-success">
-                                      <?php if ($data['pembayaran'] == "Wallet"): ?>
-                                          Menggunakan Saldo Wallet
-                                      <?php else: ?>
-                                          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-                                      <?php endif; ?>
+                                    <form action="dashboard.php" method="post">
+                                      <img class="mx-auto" src="assets/img/bukti/<?= $data['bukti'] ?>" alt="">
+                                    </form>
                                   </div>
                               </div>
                               <hr>
@@ -410,6 +429,77 @@
                                           <h6 class="mt-0"><?= $produk['nama_produk'] ?></h6>
                                           <div class="text-danger">Rp <?= number_format($produk['harga'], 2, ',', '.') ?></div>
                                           <div class="text-muted my-1"><?= $detail['jumlah'] ?> barang</div>
+                                          <?php
+                                            $viewCek = "SELECT * FROM rating WHERE id_order = " . $data['id_order'] . " AND id_barang = " . $detail['id_barang'];
+                                            $resultView = mysqli_query(connection(), $viewCek);
+                                            // print_r($resultView);
+                                            $dataRating = mysqli_fetch_array($resultView);
+                                          ?>
+                                          <?php if ($data['status'] == "Pesanan Selesai") : ?>
+                                            <?php if (mysqli_num_rows($resultView) == 0): ?>
+                                              <button id="rating" type="button" class="btn btn-sm btn-dark" name="button" data-toggle="collapse" data-target="#rating-<?= $detail['id_barang']?>">
+                                                Beri Rating
+                                              </button>
+                                            <?php else: ?>
+                                              <?php
+                                              $twos = floor($dataRating['rating'] / 2);
+                                              $ones = $dataRating['rating'] - ($twos * 2);
+                                              $zeros = 5 - ($twos + $ones);
+                                              ?>
+
+                                              <?php for ($x = 0; $x < $twos; $x++): ?>
+                                                <i class="fas fa-star"></i>
+                                              <?php endfor; ?>
+
+                                              <?php for ($x = 0; $x < $ones; $x++): ?>
+                                                <i class="fas fa-star-half-alt"></i>
+                                              <?php endfor; ?>
+
+                                              <?php for ($x = 0; $x < $zeros; $x++): ?>
+                                                <i class="far fa-star"></i>
+                                              <?php endfor; ?>
+                                            <?php endif; ?>
+                                          <?php endif; ?>
+                                          <div class="collapse" id="rating-<?= $detail['id_barang'] ?>">
+                                            <form action="dashboard.php" method="post">
+                                              <div class="card card-body mt-3 border border-dark">
+                                                <input type="hidden" class="form-control" name="id_order" value="<?php echo $data['id_order'] ?>">
+                                                <input type="hidden" class="form-control" name="id_user" value="<?php echo $data['id_user'] ?>">
+                                                <input type="hidden" class="form-control" name="id_barang" value="<?php echo $detail['id_barang'] ?>">
+                                                <div class="form-group">
+                                                  <div class="text-center mb-1" id="bintang-<?= $detail['id_barang'] ?>">
+                                                    <i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+                                                  </div>
+                                                  <input type="range" name="rating" class="form-control-range" min="0" max="10" value="0" id="ratingf-<?= $detail['id_detail'] ?>">
+                                                </div>
+                                                <script type="text/javascript">
+                                                $('#ratingf-<?= $detail['id_detail'] ?>').on('change',function(){
+                                                  var bintang = $('#ratingf-<?= $detail['id_detail'] ?>').val();
+                                                  var bintangi = "";
+                                                  var two = Math.floor(bintang / 2);
+                                                  var one = bintang - (two * 2);
+                                                  var zero = 5 - (two + one);
+
+                                                  for (var x = 0; x < two; x++) {
+                                                    bintangi += '<i class="fas fa-star"></i>';
+                                                  }
+
+                                                  for (var x = 0; x < one; x++) {
+                                                    bintangi += '<i class="fas fa-star-half-alt"></i>';
+                                                  }
+
+                                                  for (var x = 0; x < zero; x++) {
+                                                    bintangi += '<i class="far fa-star"></i>';
+                                                  }
+                                                  $(this).prev('#bintang-<?= $detail['id_barang'] ?>').html(bintangi);
+                                                });
+                                                </script>
+                                                <button type="submit" class="btn btn-sm btn-dark" name="button">
+                                                  Beri Rating
+                                                </button>
+                                              </div>
+                                            </form>
+                                          </div>
                                       </div>
                                   </div>
                                   <?php $total += $produk['harga'] * $detail['jumlah'];
@@ -469,7 +559,7 @@
                         </div>
                         <div class="modal-body">
                           <div class="alert alert-info" role="alert">
-                            <p>Pastikan bukti pembayaran <b>sudah benar</b> sebelum mengirim barang!</p>
+                            <p>Pastikan bukti pembayaran <b>sudah benar</b></p>
                           </div>
                           <form method="post" action="dashboard.php" enctype="multipart/form-data">
                             <div class="form-group">
@@ -483,7 +573,6 @@
                                     <script>
                                       $('#inputNota<?= $data['id'] ?>').on('change',function(){
                                         var upload = document.getElementById('inputNota<?= $data['id'] ?>').files;
-                                        console.log(upload[0]);
                                         if (upload[0].size > 2000000) {
                                           alert('File Melebihi 2MB');
                                         }
@@ -527,6 +616,27 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="modal fade" id="selesaiBarang-<?= $data['id'] ?>" tabindex="-1" aria-labelledby="selesaiBarangLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="selesaiBarangLabel">Selesaikan Pesanan</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p><b>Apakah anda yakin ?</b></p>
+                            <p class="mb-0">Pastikan pesanan <b class="text-success">#<?= $data['id_order'] ?></b> sudah anda terima dengan baik.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" onclick="selesai(<?= $data['id'] ?>)">Ya</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tidak</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 <?php endwhile; ?>
             </tbody>
           </table>
@@ -561,15 +671,15 @@
       })
   }
 
-  function bayar(id, id_user) {
-    $.ajax({
-        type: "POST",
-        url: "conn.php",
-        data: "act=updOrder&status=Menunggu Pengiriman&id=" + id + "&id_user=" + id_user,
-        success: function(data){
-            alert(data);
-            window.location = window.location.href;
-        }
-    })
+  function selesai(id) {
+      $.ajax({
+          type: "POST",
+          url: "conn.php",
+          data: "act=updOrder&status=Pesanan Selesai&id=" + id,
+          success: function(data){
+              alert(data);
+              window.location = window.location.href;
+          }
+      })
   }
 </script>
