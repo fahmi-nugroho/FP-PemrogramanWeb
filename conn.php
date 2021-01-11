@@ -79,7 +79,9 @@ if (isset($_POST['act'])) {
     } elseif ($_POST['act'] == "updOrder") {
         $id = $_POST['id'];
         $status = $_POST['status'];
-        $jenis = $_POST['jenis'];
+        if (isset($_POST['jenis'])) {
+          $jenis = $_POST['jenis'];
+        }
 
         if ($status == "Pesanan Dibatalkan" && $jenis == "voucher") {
             $query = "UPDATE daftar_orderv SET status = '$status' WHERE id = $id";
@@ -139,6 +141,16 @@ if (isset($_POST['act'])) {
             } else {
                 echo "Pembatalan Gagal";
             }
+        }
+        elseif ($status == "Pesanan Selesai") {
+          $query = "UPDATE daftar_order SET status = '$status' WHERE id = $id";
+          $result = mysqli_query(connection(), $query);
+          if ($result) {
+            echo "Penyelesaian Berhasil";
+          }
+          else {
+            echo "Penyelesaian Gagal";
+          }
         }
     // } elseif ($_POST['act'] == "read") {
     //     $table = $_POST['table'];

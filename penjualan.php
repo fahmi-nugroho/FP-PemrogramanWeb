@@ -44,7 +44,14 @@ if(!isset($_SESSION['user'])){
           <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
         </form>
         <h5 class="pt-2 mr-2"><?php echo $_SESSION['user']['nama']?></h5>
-        <img src="assets/img/playstation1.png" alt="" class="" style="width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;">
+        <?php
+        if (strlen($data['foto_user']) === 0) {
+          echo "<img src='assets/img/profil/playstation1.png' style='width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;'>";
+        }
+        else {
+          echo "<img src='assets/img/profil/".$data['foto_user']."' style='width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;'>";
+        }
+        ?>
         <h5><a href="logout.php" class="" data-toggle="tooltip" title="Keluar"><i class="fas fa-sign-out-alt mt-2 ml-2 text-dark"></i></a></h5>
       </div>
     </nav>
