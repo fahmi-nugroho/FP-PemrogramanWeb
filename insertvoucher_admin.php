@@ -1,6 +1,6 @@
 <?php
 include ('conn.php');
-$target_dir = "assets/img/";
+$target_dir = "assets/img/voucher/";
 $gambar=$_FILES["fileToUpload"]["name"];
 $target_file = $target_dir . basename($gambar);
 $uploadOk = 1;

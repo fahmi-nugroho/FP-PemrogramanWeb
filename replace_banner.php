@@ -16,18 +16,6 @@ if(isset($_POST["submit"])) {
   }
 }
 
-// Check if file already exists
-if (file_exists($target_file)) {
-  echo "Sorry, file already exists.";
-  $uploadOk = 0;
-}
-
-if ($_FILES["fileToUpload"]["tmp_name"] != "banner1"|| $_FILES["fileToUpload"]["tmp_name"] != "banner2"||$_FILES["fileToUpload"]["tmp_name"] != "banner3") {
-    echo "nama file salah.";
-    echo "pastikan nama file anda banner1,banner2,banner3";
-    $uploadOk = 0;
-  }
-  
 
 // Check file size
 if ($_FILES["fileToUpload"]["size"] > 500000) {
@@ -36,11 +24,10 @@ if ($_FILES["fileToUpload"]["size"] > 500000) {
 }
 
 // Allow certain file formats
-if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" ) {
+if($imageFileType != "jpg" && $imageFileType != "JPG" && $imageFileType != "jpeg" ) {
   echo "Pastikan file berformat JPG, JPEG dan PNG .";
   $uploadOk = 0;
 }
-
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
   echo "Sorry, your file was not uploaded.";
