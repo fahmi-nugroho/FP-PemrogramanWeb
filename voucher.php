@@ -152,7 +152,7 @@
     <div class="form-group mb-3">
       <label for="nominal" class="form-label">Nominal Top-Up</label>
       <select class="custom-select" aria-label="Default select example" name="nominal" id="nominal" aria-describedby="hargaHelp" required>
-        <option selected>Pilih Nominal</option>
+        <option value="" selected>Pilih Nominal</option>
         <option value="1">Rp. 50.000,00</option>
         <option value="2">Rp. 100.000,00</option>
         <option value="3">Rp. 150.000,00</option>
@@ -165,7 +165,7 @@
     <div class="form-group mb-3">
       <label for="metode" class="form-label">Metode Pembayaran</label>
       <select class="custom-select" aria-label="Default select example" name="metode" id="metode" required>
-        <option selected>Pilih Metode Pembayaran</option>
+        <option value="" selected>Pilih Metode Pembayaran</option>
         <?php if ($_GET['jenis'] == 5) : ?>
           <option value="2">Merchant (Indomart / Alfamart)</option>
           <option value="3">CC</option>

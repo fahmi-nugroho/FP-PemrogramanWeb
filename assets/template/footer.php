@@ -3,9 +3,8 @@
     <div class="col-md-3">
       <h5>Layanan Pelanggan</h5>
       <ul>
-        <li>Pusat Bantuan</li>
-        <li>Cara Pembelian</li>
-        <li>Pengiriman</li>
+        <li><a href="bantuan.php?jenis=1" style="text-decoration:none; color: white">Cara Pembelian</a></li>
+        <li><a href="bantuan.php?jenis=2" style="text-decoration:none; color: white">Pengiriman</a></li>
       </ul>
     </div>
     <div class="col-md-3">

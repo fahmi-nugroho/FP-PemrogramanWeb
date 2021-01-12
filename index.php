@@ -67,7 +67,7 @@
                 }
               }
               elseif (isset($_POST['cari'])) {
-                $query = "SELECT * FROM produk WHERE stok > 0 AND nama_produk LIKE '%".$_POST['cari']."%' ORDER BY id_produk DESC";
+                $query = "SELECT * FROM produk WHERE stok > 0 AND (nama_produk LIKE '%".$_POST['cari']."%' OR deskripsi LIKE '%".$_POST['cari']."%') ORDER BY id_produk DESC";
               }
               else {
                 $query = "SELECT * FROM produk WHERE stok > 0 ORDER BY id_produk DESC";

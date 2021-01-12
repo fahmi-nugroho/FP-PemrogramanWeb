@@ -79,6 +79,8 @@ if (isset($_POST['id_order'])) {
     <script type="text/javascript" src="assets/js/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="assets/js/bootstrap.bundle.min.js"></script>
 
+    <link rel="icon" type="image/png" href="assets/img/voucher/wallet.png">
+
     <title> Penjualan </title>
   </head>
   <body>
@@ -90,11 +92,7 @@ if (isset($_POST['id_order'])) {
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <form class="form-inline my-2 my-lg-0 ml-auto mr-auto" method="POST">
-          <input class="form-control mr-sm-2" type="search" placeholder="ID Order" aria-label="Search" name="cari">
-          <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-        </form>
-        <h5 class="pt-2 mr-2"><?php echo $_SESSION['user']['nama']?></h5>
+        <h5 class="pt-2 mr-2 ml-auto"><?php echo $_SESSION['user']['nama']?></h5>
         <?php
         if (strlen($data['foto_user']) === 0) {
           echo "<img src='assets/img/profil/playstation1.png' style='width: 40px; height: 40px; border: 1px solid black; border-radius: 50%;'>";
