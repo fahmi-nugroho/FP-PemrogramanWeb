@@ -121,8 +121,8 @@ if (isset($_POST['action'])) {
                 $query = "SELECT * FROM produk WHERE id_produk = $id";
                 $produk = mysqli_query(connection(), $query);
                 $data = mysqli_fetch_array($produk);
-
-                array_push($cart, array(0 => $id, 1 => $data[2], 2 => $data[3], 3 => $data[5], 4 => $data[8]));
+                
+                array_push($cart, array(0 => $id, 1 => $data[2], 2 => $data[3], 3 => $data[5], 4 => $data[7]));
                 array_push($toko, $data[2]);
             }
         }

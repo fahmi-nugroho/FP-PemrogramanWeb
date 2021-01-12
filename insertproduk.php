@@ -15,7 +15,7 @@ if(isset($_POST['insertdata'])){
 		$penjual = $_SESSION['user']['id'];
 
 		move_uploaded_file($tmp, $folder.$gambar);
-		$sql="INSERT INTO produk VALUES(NULL, '$id_kategori','$penjual','$nama_produk','$deskripsi','$harga','$stok', 0,'$gambar')";
+		$sql="INSERT INTO produk VALUES(NULL, '$id_kategori','$penjual','$nama_produk','$deskripsi','$harga','$stok','$gambar')";
 		$insert=mysqli_query(connection(),$sql);
 
 		if ($insert) {

@@ -6,18 +6,15 @@
         <li>Pusat Bantuan</li>
         <li>Cara Pembelian</li>
         <li>Pengiriman</li>
-        <li>Cara Pengembalian</li>
       </ul>
     </div>
     <div class="col-md-3">
       <h5>Tentang Kami</h5>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>My Shop adalah e-commerce yang berfokus pada jula beli yang berhubungan dengan game, seperti voucher-voucher game, console game, aksesoris game, dan tentunya video game itu sendiri.</p>
     </div>
     <div class="col-md-3">
-      <h5>Mitra Kerjasama</h5>
+      <h5>Mitra Pengiriman</h5>
       <ul>
-        <li>Go-Jek</li>
-        <li>Grab</li>
         <li>JNE</li>
         <li>PT. POS Indonesia</li>
         <li>Tiki</li>
@@ -27,7 +24,7 @@
       <h5>Hubungi Kami</h5>
       <ul>
         <li>021-2367-5677</li>
-        <li>customer@myshop.com</li>
+        <li><a href="mailto:customer@myshop.com" style="text-decoration:none; color: white">customer@myshop.com</a></li>
       </ul>
     </div>
   </div>
