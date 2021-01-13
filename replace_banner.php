@@ -17,12 +17,6 @@ if(isset($_POST["submit"])) {
 }
 
 
-// Check file size
-if ($_FILES["fileToUpload"]["size"] > 500000) {
-  echo "Sorry, your file is too large.";
-  $uploadOk = 0;
-}
-
 // Allow certain file formats
 if($imageFileType != "jpg" && $imageFileType != "JPG" && $imageFileType != "jpeg" ) {
   echo "Pastikan file berformat JPG, JPEG dan PNG .";
@@ -39,7 +33,7 @@ if ($uploadOk == 0) {
   </div>';
   } else {
     echo '<div class="alert alert-danger" role="alert">
-    This is a danger alert with <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
+    Data Gagal Ditambahkan<a href="admin.php" class="alert-link">Admin</a>.Click Admin untuk kembali ke admin page.
   </div>';
   }
 }

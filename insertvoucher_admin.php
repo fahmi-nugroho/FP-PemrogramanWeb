@@ -20,18 +20,12 @@ if(isset($_POST["submit"])) {
   }
 }
 
-// Check if file already exists
-if (file_exists($target_file)) {
-  echo '<div class="alert alert-warning" role="alert">
-  gambar telah ditambahakan sebelumya <a href="#" class="alert-link">an example link</a>. Give it a click if you like.
-</div>';
-  $uploadOk = 0;
-}
+
 
 // Check file size
 if ($_FILES["fileToUpload"]["size"] > 500000) {
   echo '<div class="alert alert-danger" role="alert">
-  Pastikan gambar tidak lebih dai 5Mb. Klick untuk kembali ke <a href="admin.php" class="alert-link">Admin </a>.
+  Pastikan gambar tidak lebih dari 5Mb. Klick untuk kembali ke <a href="admin.php" class="alert-link">Admin </a>.
   </div>';
   $uploadOk = 0;
 }

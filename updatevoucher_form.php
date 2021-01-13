@@ -37,12 +37,12 @@
 
     <form action="updatevoucher_admin.php" method="post" enctype="multipart/form-data">
         <!-- <input type="hidden" name="id_voucher" value="<?= $_GET['id']; ?>"> -->
-        <input type="text" name="id_voucher" value="<?= $_GET['id']; ?>">
+        <input type="hidden" name="id_voucher" value="<?= $_GET['id']; ?>">
         <td>jenis voucher</td>
-        <input type="text" name="jenis_voucher" id="jenis_voucher">
+        <input type="text" name="jenis_voucher" id="jenis_voucher" autocomplete="off">
         Select image to upload:
         <input type="file" name="fileToUpload" id="fileToUpload">
-        <input type="submit" value="Tambahkan" name="submit">
+        <input type="submit" value="Perbarui" name="submit">
     </form>
     </form>
 </body>

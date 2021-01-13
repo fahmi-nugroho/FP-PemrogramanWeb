@@ -15,7 +15,7 @@ require 'conn.php';
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/all.min.css">
 
-    <title>Hello, world!</title>
+    <title>Halaman Admin</title>
 </head>
 
 <body>
@@ -161,7 +161,7 @@ require 'conn.php';
                 <td>
 
 
-                    <a href="http://localhost/benaya/barokah/deleteproduk.php?id=<?php echo $data['id_user']?>"
+                    <a href="http://localhost/benaya/FP-PemrogramanWeb-master/FP-PemrogramanWeb-master/deleteuser_admin.php?id=<?php echo $data['id_user']?>"
                         onclick="return confirm('Hapus Data <?php echo $data['id_user']?>')" ;>Delete</a>
 
                 </td>
