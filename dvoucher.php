@@ -10,10 +10,10 @@ if(!isset($_SESSION['user'])){
     $result = mysqli_query(connection(),$query);
     $data = mysqli_fetch_array($result);
 
-    // if (!isset($data['telepon_user']) || !isset($data['alamat_user']) || !isset($data['foto_user'])) {
-    //     message("Mohon lengkapi profil terlebih dahulu");
-    //     redirect("dashboard.php");
-    // }
+    if (!isset($data['telepon_user']) || !isset($data['alamat_user']) || !isset($data['foto_user'])) {
+        message("Mohon lengkapi profil terlebih dahulu");
+        redirect("dashboard.php");
+    }
 }
 
 if (isset($_POST['id_order'])) {
@@ -141,23 +141,13 @@ if (isset($_POST['id_order'])) {
             </thead>
             <tbody>
             	<?php
-               if ($_SERVER['REQUEST_METHOD']=== 'POST') {
-                    // $search = $_POST['cari'];
-                    // $query = "SELECT * FROM daftar_order WHERE id_order='$search'";
-                    // $result = mysqli_query(connection(),$query);
-                } else {
-                    $query = "SELECT * FROM daftar_orderv WHERE id_user = ".$_SESSION['user']['id']." ORDER BY id_order DESC";
-                    $result = mysqli_query(connection(), $query);
-                }
+                $query = "SELECT * FROM daftar_orderv WHERE id_user = ".$_SESSION['user']['id']." ORDER BY id_order DESC";
+                $result = mysqli_query(connection(), $query);
 
                 $no = 1;
 
                 while ($data = mysqli_fetch_array($result)):
-                    if ($data['status'] == "Menunggu Pengiriman") {
-                        echo "<tr class='table-primary'>";
-                    } elseif ($data['status'] == "Proses Pengiriman") {
-                        echo "<tr class='table-warning'>";
-                    } elseif ($data['status'] == "Pesanan Selesai") {
+                    if ($data['status'] == "Pesanan Selesai") {
                         echo "<tr class='table-success'>";
                     } elseif ($data['status'] == "Pesanan Dibatalkan") {
                         echo "<tr class='table-danger'>";
@@ -267,7 +257,7 @@ if (isset($_POST['id_order'])) {
                       <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                           <div class="modal-header">
-                              <h5 class="modal-title" id="bayarBarangLabel">Pengiriman Barang</h5>
+                              <h5 class="modal-title" id="bayarBarangLabel">Pembayaran Voucher</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                               </button>

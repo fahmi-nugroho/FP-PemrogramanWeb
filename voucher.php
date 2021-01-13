@@ -77,18 +77,6 @@
         $metode = 'CC';
       }
 
-      // echo $idorder;
-      // echo $id_user;
-      // echo $id_pelanggan;
-      // echo $user['nama_user'];
-      // echo $tgl;
-      // echo $user['alamat_user'];
-      // echo $user['telepon_user'];
-      // echo $nominal;
-      // echo $harga;
-      // echo $metode;
-      // message($id_voucher);
-
       if ($metode == 'Wallet') {
         if ($data['wallet'] >= $harga) {
           $query = "INSERT INTO daftar_orderv VALUES (null, $idorder, $id_user, '$id_pelanggan', $id_voucher, '".$user['nama_user']."', '$tgl', '".$user['alamat_user']."', '".$user['telepon_user']."', $nominal, $harga, '$metode', 'Pesanan Selesai', 'wallet.png')";

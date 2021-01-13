@@ -319,14 +319,8 @@
             </thead>
             <tbody>
             	<?php
-               // if ($_SERVER['REQUEST_METHOD']=== 'POST') {
-                    // $search = $_POST['cari'];
-                    // $query = "SELECT * FROM daftar_order WHERE id_order='$search'";
-                    // $result = mysqli_query(connection(),$query);
-                // } else {
-                    $query = "SELECT * FROM daftar_order WHERE id_user = ".$_SESSION['user']['id']." ORDER BY id_order DESC";
-                    $result = mysqli_query(connection(), $query);
-                // }
+                $query = "SELECT * FROM daftar_order WHERE id_user = ".$_SESSION['user']['id']." ORDER BY id_order DESC";
+                $result = mysqli_query(connection(), $query);
 
                 $no = 1;
 
@@ -550,7 +544,7 @@
                     <div class="modal-dialog modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="bayarBarangLabel">Pengiriman Barang</h5>
+                            <h5 class="modal-title" id="bayarBarangLabel">Pembayaran Barang</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
