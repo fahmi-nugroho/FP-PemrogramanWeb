@@ -79,11 +79,8 @@ if (isset($_POST['act'])) {
     } elseif ($_POST['act'] == "updOrder") {
         $id = $_POST['id'];
         $status = $_POST['status'];
-        if (isset($_POST['jenis'])) {
-          $jenis = $_POST['jenis'];
-        }
 
-        if ($status == "Pesanan Dibatalkan" && $jenis == "voucher") {
+        if ($status == "Pesanan Dibatalkan" && isset($jenis) && $jenis == 'voucher') {
             $query = "UPDATE daftar_orderv SET status = '$status' WHERE id = $id";
             $result = mysqli_query(connection(), $query);
             if ($result) {
@@ -145,7 +142,17 @@ if (isset($_POST['act'])) {
         elseif ($status == "Pesanan Selesai") {
           $query = "UPDATE daftar_order SET status = '$status' WHERE id = $id";
           $result = mysqli_query(connection(), $query);
+          $querySelect = "SELECT * FROM daftar_order WHERE id = $id";
+          $resultSelect = mysqli_query(connection(), $querySelect);
+          $daftar = mysqli_fetch_array($resultSelect);
+          $queryPenjual = "SELECT * FROM user WHERE id_user = ". $daftar['id_penjual'];
+          $resultPenjual = mysqli_query(connection(), $queryPenjual);
+          $penjual = mysqli_fetch_array($resultPenjual);
+
           if ($result) {
+            $wallet = $penjual['wallet'] + $daftar['total'];
+            $queryWallet = "UPDATE user SET wallet = $wallet WHERE id_user = ".$penjual['id_user'];
+            $resultWallet = mysqli_query(connection(), $queryWallet);
             echo "Penyelesaian Berhasil";
           }
           else {
