@@ -135,7 +135,7 @@
 
     <link rel="icon" type="image/png" href="assets/img/voucher/wallet.png">
 
-    <title>Hello, world!</title>
+    <title>My Shop</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">

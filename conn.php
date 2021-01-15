@@ -93,7 +93,7 @@ if (isset($_POST['act'])) {
         } elseif ($status == "Proses Pengiriman") {
             $resi = $_POST['resi'];
 
-            $sql = "UPDATE daftar_order SET status = '$status', resi = $resi WHERE id = $id";
+            $sql = "UPDATE daftar_order SET status = '$status', resi = '$resi' WHERE id = $id";
             if (mysqli_query(connection(), $sql)) {
                 echo "Pengiriman Dilakukan";
             } else {
